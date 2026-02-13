@@ -33,8 +33,7 @@ const navItems = [
 const newsTickerItems = [
   "🏆 Nominations Open: Women's Day Achievement Awards 2026",
   "📅 Event Date: March 8, 2026 at SIMATS Campus",
-  "⭐ Last Year's Winner Dr. Priya Sharma receives National Recognition",
-  "🎓 SIMATS Engineering celebrates 25 years of excellence",
+  "🎓 SIMATS (Saveetha Institute of Medical and Technical Sciences) celebrates 25 years of excellence",
   "📰 Times of India - India's leading English daily partners for Awards",
   "🌟 Special Lifetime Achievement Award announced",
 ];
@@ -73,12 +72,12 @@ function DualLogo() {
       <div className="flex items-center gap-2">
         <img 
           src="/simats.png" 
-          alt="SIMATS Engineering" 
+          alt="SIMATS (Saveetha Institute of Medical and Technical Sciences) " 
           className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
         />
         <div className="hidden sm:block">
           <div className="text-[#C41E7F] font-bold text-sm leading-tight">SIMATS</div>
-          <div className="text-gray-500 text-xs">Engineering</div>
+          <div className="text-gray-500 text-xs">Saveetha Institute of Medical and Technical Sciences</div>
         </div>
       </div>
       
@@ -189,11 +188,23 @@ function AnnouncementBox() {
   return (
     <div className="max-w-4xl mx-auto text-center py-12 sm:py-16 lg:py-20" id="nominate">
       {/* Decorative gold top border */}
-      <div className="w-24 h-1 bg-gradient-to-r from-[#D4AF37] to-[#C41E7F] mx-auto mb-8 sm:mb-12"></div>
+      <div className="w-24 h-1 bg-gradient-to-r from-[#D4AF37] to-[#C41E7F] mx-auto mb-4 sm:mb-8"></div>
 
       {/* Main headline */}
-      <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#C41E7F] mb-6 sm:mb-8 leading-relaxed font-bold">
-        SIMATS Engineering & Times of India Celebrate the Trailblazers of 2026
+      <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#C41E7F] m1-1 sm:mb-1 leading-relaxed font-bold">
+        Saveetha Institute of Medical and Technical Sciences
+      </h2>
+        {/* Main headline */}
+      <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#C41E7F] mb-1 sm:mb-1 leading-tight font-bold">
+        &
+      </h2>
+        {/* Main headline */}
+      <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#C41E7F] mb-5 sm:mb-8 leading-tight font-bold">
+        Times of India 
+      </h2>
+         {/* Main headline */}
+      <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#C41E7F] mb-1 sm:mb-2 leading-tight font-bold">
+        Celebrate the Trailblazers of 2026
       </h2>
 
       {/* Body text */}
@@ -203,7 +214,7 @@ function AnnouncementBox() {
           Technology, Research, and Social Impact.
         </p>
         <p>
-          This prestigious collaboration between SIMATS Engineering and Times of India honors 
+          This prestigious collaboration between SIMATS (Saveetha Institute of Medical and Technical Sciences)  and Times of India honors 
           extraordinary women who are shaping the future through innovation, leadership, and 
           dedication to their fields.
         </p>
@@ -219,7 +230,7 @@ function AnnouncementBox() {
       </a>
 
       {/* Decorative bottom border */}
-      <div className="w-24 h-1 bg-gradient-to-r from-[#C41E7F] to-[#D4AF37] mx-auto mt-8 sm:mt-12"></div>
+      <div className="w-24 h-1 bg-gradient-to-r from-[#C41E7F] to-[#D4AF37] mx-auto mt-4 sm:mt-8"></div>
     </div>
   );
 }
@@ -868,11 +879,11 @@ function PartnershipBanner() {
           <div className="flex items-center gap-3">
             <img 
               src="/simats.png" 
-              alt="SIMATS Engineering" 
+              alt="SIMATS (Saveetha Institute of Medical and Technical Sciences) " 
               className="w-12 h-12 sm:w-16 sm:h-16 object-contain"
             />
             <div className="hidden sm:block">
-              <div className="text-[#C41E7F] font-bold">SIMATS Engineering</div>
+              <div className="text-[#C41E7F] font-bold">SIMATS (Saveetha Institute of Medical and Technical Sciences) </div>
               <div className="text-gray-500 text-sm">Excellence in Education</div>
             </div>
           </div>
@@ -944,7 +955,7 @@ function Footer() {
             <p className="text-white/70 text-sm">
               The Women&apos;s Day Achievement Awards celebrate extraordinary women who are making 
               a difference in Technology, Research, and Social Impact. A prestigious collaboration 
-              between SIMATS Engineering and Times of India.
+              between SIMATS (Saveetha Institute of Medical and Technical Sciences)  and Times of India.
             </p>
           </div>
           
@@ -966,7 +977,7 @@ function Footer() {
           <div>
             <h3 className="font-bold text-lg mb-4 text-[#D4AF37]">Contact Us</h3>
             <div className="text-white/70 text-sm space-y-2">
-              <p>SIMATS Engineering Campus</p>
+              <p>SIMATS (Saveetha Institute of Medical and Technical Sciences) Campus</p>
               <p>Chennai, Tamil Nadu, India</p>
               <p>Email: awards@simats.edu.in</p>
               <p>Phone: +91 44 2745 1234</p>
@@ -989,7 +1000,7 @@ function Footer() {
         </div>
         
         <div className="mt-12 pt-8 border-t border-white/20 text-center text-sm text-white/50">
-          <p>&copy; {new Date().getFullYear()} Women&apos;s Day Achievement Awards. SIMATS Engineering & Times of India. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Women&apos;s Day Achievement Awards. SIMATS (Saveetha Institute of Medical and Technical Sciences)  & Times of India. All rights reserved.</p>
         </div>
       </div>
     </footer>
