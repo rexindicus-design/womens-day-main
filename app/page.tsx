@@ -9,8 +9,6 @@ import {
   Menu,
   X,
   Check,
-  Plus,
-  Minus,
   ChevronUp,
   Award,
   Trophy,
@@ -25,8 +23,9 @@ import {
 
 // Navigation items
 const navItems = [
-  { name: "Home", href: "#", active: true },
+  { name: "Home", href: "/", active: true },
   { name: "Categories", href: "/categories" },
+  { name: "Register", href: "/register" },
 ];
 
 // News ticker items
@@ -204,25 +203,20 @@ function AnnouncementBox() {
       </h2>
          {/* Main headline */}
       <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#C41E7F] mb-1 sm:mb-2 leading-tight font-bold">
-        Celebrate the Trailblazers of 2026
+        invite nominations for the "SIMATS EmpowHER Awards 2026"
       </h2>
 
       {/* Body text */}
       <div className="font-serif text-base sm:text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto space-y-4 mb-8">
         <p className="text-xl text-[#C41E7F] font-medium">
-          Nominations are now OPEN for the annual Women&apos;s Day Awards, recognizing excellence in 
-          Technology, Research, and Social Impact.
+          The SIMATS EmpowHer Awards serve as a prestigious platform to recognize formidable and unstoppable womens leaders,emboding a multi faceted brillance, blending empathetic leadership with unwavering intelligence rigor to redefine success, lighting the path for aspirant generations.
         </p>
-        <p>
-          This prestigious collaboration between SIMATS (Saveetha Institute of Medical and Technical Sciences)  and Times of India honors 
-          extraordinary women who are shaping the future through innovation, leadership, and 
-          dedication to their fields.
-        </p>
+       
       </div>
 
       {/* Submit Button */}
       <a
-        href="#nomination-form"
+        href="/register"
         className="inline-flex items-center gap-2 bg-gradient-to-r from-[#C41E7F] to-[#D4AF37] text-white font-bold px-8 py-4 text-lg rounded-full hover:shadow-lg hover:shadow-pink-500/30 transition-all hover:scale-105"
       >
         <Award className="w-6 h-6" />
@@ -257,10 +251,10 @@ function NominationInfoSection() {
               Why Nominate?
             </h2>
             <div className="space-y-4">
-              <CheckItem>Recognizes and celebrates success of inspirational women</CheckItem>
-              <CheckItem>Boosts professional credibility and visibility</CheckItem>
-              <CheckItem>Creates role models for the next generation of women leaders</CheckItem>
-              <CheckItem>Showcases your organization&apos;s commitment to diversity and excellence</CheckItem>
+              <CheckItem>Celebrates success of extraordinary women</CheckItem>
+              <CheckItem>Amplifies visibility and credibility</CheckItem>
+              <CheckItem>Inspires the next generation of women leaders</CheckItem>
+               <CheckItem>Drives gender equity & social change</CheckItem>
               <CheckItem>National media coverage through Times of India</CheckItem>
             </div>
           </div>
@@ -271,11 +265,12 @@ function NominationInfoSection() {
               What Judges Look For
             </h2>
             <div className="space-y-4">
-              <CheckItem>Significant and ground-breaking achievements to date</CheckItem>
-              <CheckItem>High potential and vision for the future</CheckItem>
-              <CheckItem>Distinctive, innovative contribution in their field</CheckItem>
-              <CheckItem>Ability and willingness to act as a role model</CheckItem>
-              <CheckItem>Impact on community, industry, or society at large</CheckItem>
+              <CheckItem>Outstanding achievements till date</CheckItem>
+              <CheckItem>Leadership and Mentorship</CheckItem>
+              <CheckItem>Commitment to diversity and inclusion</CheckItem>
+              <CheckItem>Innovation and Creativity</CheckItem>
+               <CheckItem>Future Potential and vision</CheckItem>
+              <CheckItem>Impact on community and society at large</CheckItem>
             </div>
           </div>
         </div>
@@ -306,41 +301,39 @@ function HowToNominateSection() {
               How to Nominate
             </h2>
             <p className="text-white/90 mb-6">
-              If you believe that you, or somebody you know deserves one of the Awards, then please 
-              complete the online nomination form. You will be required to complete the following details:
+              Submit the nomination for yourself or someone you believe is a strong fit for the Award. Nomination can be submitted in multiple categories, if appropiate.
             </p>
+            <p className="text-white/90 mb-6">
+              The Last of nomination is 23rd February 2026.
+            </p>
+
             <p className="text-white/70 text-sm italic">
-              All nominations are treated in confidence and only seen by the judging panel.
+              All nominations will be kept confidential and only viewed by the judging panel.
             </p>
+            
           </div>
 
           {/* Middle column - Items 1-4 */}
           <div className="space-y-6">
             <NumberedItem number={1}>
-              The track record of the candidate within her current and previous organisations.
+              The candidate's career track record across organisations.
             </NumberedItem>
             <NumberedItem number={2}>
-              Her key achievements to date.
+              Her achievements to date
             </NumberedItem>
             <NumberedItem number={3}>
-              A sense of the candidate&apos;s vision/plans for the future, both personally and for the organisation 
-              she works. What makes her special?
+              A vision for the future and unique value proposition.
             </NumberedItem>
-            <NumberedItem number={4}>
-              A 50-word biography for use in the awards programme should the candidate be shortlisted. 
-              This may be edited by our editorial team.
-            </NumberedItem>
+           
           </div>
 
           {/* Right column - Items 5-7 and notice */}
           <div className="space-y-6">
-            <NumberedItem number={5}>
+            <NumberedItem number={4}>
               High quality photo of nominee (2MB JPEG).
             </NumberedItem>
-            <NumberedItem number={6}>
-              Curriculum Vitae.
-            </NumberedItem>
-            <NumberedItem number={7}>
+           
+            <NumberedItem number={5}>
               Supporting submission material. For example LinkedIn profile, statements of recommendation, 
               relevant press coverage.
             </NumberedItem>
@@ -353,88 +346,6 @@ function HowToNominateSection() {
               </p>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// FAQ data
-const faqData = [
-  {
-    question: "CAN I SUBMIT MY NOMINATION AT MIDNIGHT ON THE DEADLINE?",
-    answer: "Yes, but we would always advise you to leave plenty of time before the deadline – this allows us to assist with any issues in a timely manner before the shortlisting process begins. Please be aware that we are unable to offer technical assistance outside of office hours."
-  },
-  {
-    question: "I DON'T HAVE A CV/A HIGH RESOLUTION PHOTO – WHAT SHOULD I DO?",
-    answer: "While a CV and high-resolution photo are preferred, you can still submit your nomination. Please provide as much relevant information as possible about the nominee's achievements and background. You can submit additional materials at a later date if needed."
-  },
-  {
-    question: "CAN I INCLUDE A WEBSITE/VIDEO/ONLINE PROFILE TO MY ENTRY?",
-    answer: "Yes, you can include links to relevant websites, videos, and online profiles as supporting material for your nomination. These can help demonstrate the nominee's achievements and impact."
-  },
-  {
-    question: "CAN I ATTACH MORE THAN 10 PAGES OF SUPPORTING MATERIAL?",
-    answer: "We recommend keeping supporting materials concise and relevant. While there is no strict limit, our judges appreciate clear and focused submissions. Please include only the most pertinent information."
-  },
-  {
-    question: "CAN I GIVE YOU THE CONTACT DETAILS OF THE PEOPLE PROVIDING MY REFERENCES?",
-    answer: "We prefer to receive written testimonials or letters of recommendation with your submission. This ensures we have all necessary information during the judging process. However, you may provide contact details as supplementary information."
-  },
-  {
-    question: "I AM NOT SURE WHAT CATEGORY I SHOULD ENTER, WHAT SHOULD I DO?",
-    answer: "Review the category descriptions on our Award Categories page to find the best fit. If you're still unsure, contact our team for guidance. You may also submit nominations into multiple categories if appropriate."
-  }
-];
-
-// FAQ Item Component
-function FAQItem({ question, answer, isOpen, onClick }: { 
-  question: string; 
-  answer: string; 
-  isOpen: boolean; 
-  onClick: () => void 
-}) {
-  return (
-    <div className="border-b border-pink-200">
-      <button
-        className="w-full py-4 flex items-center justify-between text-left"
-        onClick={onClick}
-        aria-expanded={isOpen}
-      >
-        <span className="text-[#6B2D5B] font-medium pr-4">{question}</span>
-        <span className="flex-shrink-0 text-[#C41E7F]">
-          {isOpen ? <Minus className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
-        </span>
-      </button>
-      {isOpen && (
-        <div className="pb-4">
-          <p className="text-gray-600 font-serif">{answer}</p>
-        </div>
-      )}
-    </div>
-  );
-}
-
-// FAQs Section
-function FAQsSection() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
-
-  return (
-    <section className="py-16 sm:py-20 bg-white" id="faq">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="font-serif text-3xl sm:text-4xl text-[#C41E7F] text-center mb-12 font-bold">
-          Frequently Asked Questions
-        </h2>
-        <div>
-          {faqData.map((faq, index) => (
-            <FAQItem
-              key={index}
-              question={`${index + 1}. ${faq.question}`}
-              answer={faq.answer}
-              isOpen={openIndex === index}
-              onClick={() => setOpenIndex(openIndex === index ? null : index)}
-            />
-          ))}
         </div>
       </div>
     </section>
@@ -838,25 +749,25 @@ function NominationForm() {
 // CTA Section
 function CTASection() {
   return (
-    <section className="bg-gradient-to-r from-[#C41E7F] via-[#6B2D5B] to-[#2D1B4E] py-16 sm:py-20 relative overflow-hidden">
+    <section className="bg-white py-16 sm:py-20 relative overflow-hidden">
       {/* Sparkle decorations */}
       <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-10 left-10 w-2 h-2 bg-[#D4AF37] rounded-full animate-pulse"></div>
+        <div className="absolute top-10 left-10 w-2 h-2 bg-[#C41E7F] rounded-full animate-pulse"></div>
         <div className="absolute top-20 right-20 w-3 h-3 bg-[#D4AF37] rounded-full animate-pulse delay-100"></div>
-        <div className="absolute bottom-20 left-1/4 w-2 h-2 bg-white rounded-full animate-pulse delay-200"></div>
+        <div className="absolute bottom-20 left-1/4 w-2 h-2 bg-[#C41E7F] rounded-full animate-pulse delay-200"></div>
         <div className="absolute bottom-10 right-1/4 w-3 h-3 bg-[#D4AF37] rounded-full animate-pulse delay-300"></div>
       </div>
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-white mb-4 font-bold">
-          Ready to Nominate a Trailblazer?
+        <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#C41E7F] mb-4 font-bold">
+          Ready to Nominate ?
         </h2>
-        <p className="text-white/80 text-lg mb-8">
+        <p className="text-gray-600 text-lg mb-8">
           Don&apos;t miss the opportunity to recognize extraordinary women making a difference
         </p>
         <a
-          href="#nomination-form"
-          className="inline-flex items-center gap-2 bg-[#D4AF37] text-[#6B2D5B] font-bold px-8 py-4 rounded-full hover:bg-white transition-colors text-lg shadow-xl"
+          href="/register"
+          className="inline-flex items-center gap-2 bg-gradient-to-r from-[#C41E7F] to-[#D4AF37] text-white font-bold px-8 py-4 rounded-full hover:shadow-lg hover:shadow-pink-500/30 transition-all hover:scale-105 text-lg"
         >
           <Trophy className="w-5 h-5" />
           Submit Nomination Now
@@ -898,6 +809,25 @@ function PartnershipBanner() {
             <div className="hidden sm:block">
               <div className="text-[#E31837] font-bold">Times of India</div>
               <div className="text-gray-500 text-sm">India&apos;s Leading Daily</div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Knowledge Partner Section */}
+        <div className="text-center mt-8 mb-4">
+          <p className="text-[#6B2D5B] text-sm uppercase tracking-wider font-medium">Audit Partner</p>
+        </div>
+        <div className="flex items-center justify-center">
+          {/* EY Logo */}
+          <div className="flex items-center gap-3">
+            <img 
+              src="/ey.png" 
+              alt="EY" 
+              className="w-12 h-12 sm:w-16 sm:h-16 object-contain"
+            />
+            <div className="hidden sm:block">
+              <div className="text-[#FFE600] font-bold">EY</div>
+              <div className="text-gray-500 text-sm">Building a better working world</div>
             </div>
           </div>
         </div>
@@ -1023,7 +953,6 @@ export default function HomePage() {
 
         <NominationInfoSection />
         <HowToNominateSection />
-        <FAQsSection />
         <CTASection />
       </main>
 

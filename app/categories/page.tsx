@@ -16,6 +16,7 @@ import {
 const navItems = [
   { name: "Home", href: "/" },
   { name: "Categories", href: "/categories", active: true },
+  { name: "Register", href: "/register" },
 ];
 
 // SIMATS Award categories from the document
@@ -57,7 +58,7 @@ const categoryGroups = [
     color: "gold",
     categories: [
       {
-        title: "Woman Entrepreneur of the Year",
+        title: "Woman Entrepreneur of the Year(All Industries)",
         description: "Recognising outstanding entrepreneurial achievement across all industries and sectors.",
       },
       {
@@ -106,8 +107,8 @@ const categoryGroups = [
 const newsTickerItems = [
   "🏆 Nominations Open: Women's Day Achievement Awards 2026",
   "📅 Event Date: March 8, 2026 at SIMATS Campus",
-  "⭐ Last Year's Winner Dr. Priya Sharma receives National Recognition",
-  "🎓 SIMATS Engineering celebrates 25 years of excellence",
+  "🎓 SIMATS (Saveetha Institute of Medical and Technical Sciences) celebrates 25 years of excellence",
+  "📰 Times of India - India's leading English daily partners for Awards",
 ];
 
 // News Ticker Component
@@ -132,7 +133,7 @@ function DualLogo() {
       <div className="flex items-center gap-2">
         <img 
           src="/simats.png" 
-          alt="SIMATS Engineering" 
+          alt="SAVEETHA INSTITUTE OF MEDICAL AND TECHNICAL SCIENCES" 
           className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
         />
         <div className="hidden sm:block">
@@ -343,12 +344,12 @@ function CategoriesContent() {
         <div className="text-center mb-16">
           <div className="w-24 h-1 bg-gradient-to-r from-[#C41E7F] to-[#D4AF37] mx-auto mb-8 rounded-full"></div>
           <h2 className="font-serif text-2xl sm:text-3xl text-[#C41E7F] mb-4 font-bold">
-            Proposed Award Categories
+            Award Categories
           </h2>
           <p className="text-gray-600 max-w-3xl mx-auto">
             The Women&apos;s Day Achievement Awards 2026 celebrates excellence across multiple categories, 
             recognizing outstanding women who are making a difference in their respective fields. 
-            A total of <strong className="text-[#C41E7F]">16 awards</strong> will be presented across the following categories.
+            
           </p>
         </div>
 
@@ -363,7 +364,7 @@ function CategoriesContent() {
             Know someone who deserves recognition? Submit your nomination today.
           </p>
           <a
-            href="/#nomination-form"
+            href="/register"
             className="inline-flex items-center gap-2 bg-gradient-to-r from-[#C41E7F] to-[#D4AF37] text-white font-bold px-8 py-4 rounded-full hover:shadow-lg hover:shadow-pink-500/30 transition-all hover:scale-105"
           >
             <Trophy className="w-5 h-5" />
@@ -387,11 +388,11 @@ function PartnershipBanner() {
           <div className="flex items-center gap-3">
             <img 
               src="/simats.png" 
-              alt="SIMATS Engineering" 
+              alt="SAVEETHA INSTITUTE OF MEDICAL AND TECHNICAL SCIENCES" 
               className="w-12 h-12 sm:w-16 sm:h-16 object-contain"
             />
             <div className="hidden sm:block">
-              <div className="text-[#C41E7F] font-bold">SIMATS Engineering</div>
+              <div className="text-[#C41E7F] font-bold">Saveetha Institute of Medical and Technical Sciences</div>
               <div className="text-gray-500 text-sm">Excellence in Education</div>
             </div>
           </div>
@@ -440,7 +441,7 @@ function Footer() {
           <div>
             <h3 className="font-bold text-lg mb-4 text-[#D4AF37]">Contact Us</h3>
             <div className="text-white/70 text-sm space-y-2">
-              <p>SIMATS Engineering Campus</p>
+              <p>Saveetha Institute of Medical and Technical Sciences, Campus</p>
               <p>Chennai, Tamil Nadu, India</p>
               <p>Email: awards@simats.edu.in</p>
             </div>
@@ -461,7 +462,7 @@ function Footer() {
           </div>
         </div>
         <div className="mt-12 pt-8 border-t border-white/20 text-center text-sm text-white/50">
-          <p>&copy; {new Date().getFullYear()} Women&apos;s Day Achievement Awards. SIMATS Engineering & Times of India.</p>
+          <p>&copy; {new Date().getFullYear()} Women&apos;s Day Achievement Awards. Saveetha Institute of Medical and Technical Sciences & Times of India.</p>
         </div>
       </div>
     </footer>
