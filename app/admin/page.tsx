@@ -38,6 +38,7 @@ function AdminDashboardContent() {
     const [viewMode, setViewMode] = useState<'list' | 'preview'>('list');
     const [pagination, setPagination] = useState<PaginationData | null>(null);
     const [statusFilter, setStatusFilter] = useState<string>('all');
+    const [downloadingId, setDownloadingId] = useState<number | null>(null);
 
     // Get page from URL or default to 1
     const page = parseInt(searchParams.get('page') || '1');
@@ -109,6 +110,31 @@ function AdminDashboardContent() {
 
     const handleNextPage = () => {
         if (pagination && page < pagination.totalPages!) setPage(page + 1);
+    };
+
+    const handleDownloadPDF = async (nominationId: number, nomineeName: string) => {
+        setDownloadingId(nominationId);
+        try {
+            const response = await fetch(`/api/nominations/${nominationId}/pdf`);
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.error || 'Failed to generate PDF');
+            }
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `nomination_${nominationId}_${nomineeName.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } catch (error) {
+            console.error('Download error:', error);
+            alert(error instanceof Error ? error.message : 'Failed to download PDF. Please try again.');
+        } finally {
+            setDownloadingId(null);
+        }
     };
 
     if (loading) return (
@@ -195,12 +221,23 @@ function AdminDashboardContent() {
                                             </span>
                                         </td>
                                         <td className="py-4 px-6 text-sm text-gray-700">
-                                            <Link
-                                                href={`/admin/nominations/${nomination.id}`}
-                                                className="text-[#C41E7F] hover:text-[#B02A5A] font-medium hover:underline"
-                                            >
-                                                View Details
-                                            </Link>
+                                            <div className="flex items-center gap-3">
+                                                <Link
+                                                    href={`/admin/nominations/${nomination.id}`}
+                                                    className="text-[#C41E7F] hover:text-[#B02A5A] font-medium hover:underline"
+                                                >
+                                                    View Details
+                                                </Link>
+                                                <button
+                                                    onClick={() => handleDownloadPDF(nomination.id, nomination.nominee_name)}
+                                                    disabled={downloadingId === nomination.id}
+                                                    className="text-[#C41E7F] hover:text-[#B02A5A] flex items-center gap-1 text-xs border border-[#C41E7F] px-2 py-1 rounded hover:bg-pink-50 disabled:opacity-50 disabled:cursor-wait"
+                                                    title="Download PDF"
+                                                >
+                                                    <Download size={12} className={downloadingId === nomination.id ? 'animate-pulse' : ''} />
+                                                    {downloadingId === nomination.id ? '...' : 'PDF'}
+                                                </button>
+                                            </div>
                                         </td>
                                         <td className="py-4 px-6 text-sm text-gray-700">
                                             <div className="flex flex-col space-y-1">
@@ -285,13 +322,21 @@ function AdminDashboardContent() {
                                     )}
                                 </div>
 
-                                <div className="mt-4 pt-4 border-t border-pink-100">
+                                <div className="mt-4 pt-4 border-t border-pink-100 flex gap-2">
                                     <Link
                                         href={`/admin/nominations/${nomination.id}`}
-                                        className="block w-full text-center bg-[#C41E7F] hover:bg-[#B02A5A] text-white font-medium py-2 rounded transition-colors"
+                                        className="flex-1 text-center bg-[#C41E7F] hover:bg-[#B02A5A] text-white font-medium py-2 rounded transition-colors"
                                     >
-                                        View Full Details
+                                        View Details
                                     </Link>
+                                    <button
+                                        onClick={() => handleDownloadPDF(nomination.id, nomination.nominee_name)}
+                                        disabled={downloadingId === nomination.id}
+                                        className="flex items-center justify-center gap-1 px-3 py-2 border border-[#C41E7F] text-[#C41E7F] rounded hover:bg-pink-50 transition-colors disabled:opacity-50 disabled:cursor-wait"
+                                        title="Download PDF"
+                                    >
+                                        <Download size={16} className={downloadingId === nomination.id ? 'animate-pulse' : ''} />
+                                    </button>
                                 </div>
                             </div>
                         ))}

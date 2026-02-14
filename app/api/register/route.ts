@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/lib/db';
 import { ResultSetHeader } from 'mysql2';
+import { sendEmail, generateRegistrationEmailHTML } from '@/lib/email';
+import { generateRegistrationPDF } from '@/lib/generateRegistrationPDF';
 
 // Type definitions
 interface NominationData {
@@ -175,6 +177,67 @@ export async function POST(request: NextRequest) {
           );
         }
       }
+    }
+    
+    // Send confirmation email with PDF
+    try {
+      // Generate PDF
+      const pdfBuffer = await generateRegistrationPDF({
+        nominationId,
+        category: data.category,
+        nomineeName: data.nomineeName,
+        gender: data.gender,
+        dateOfBirth: data.dateOfBirth,
+        mobileNumber: data.mobileNumber,
+        emailId: data.emailId,
+        cityDistrict: data.cityDistrict,
+        designation: data.designation,
+        organization: data.organization,
+        officeAddress: data.officeAddress,
+        yearsInOrg: data.yearsInOrg,
+        yearsInDesignation: data.yearsInDesignation,
+        yearOfIncorporation: data.yearOfIncorporation,
+        revenue: data.revenue,
+        websiteUrl: data.websiteUrl,
+        socialMediaLinks: data.socialMediaLinks,
+        sector: data.sector,
+        otherSector: data.otherSector,
+        initiativeTitle: data.initiativeTitle,
+        startDate: data.startDate,
+        endDate: data.endDate,
+        innovationDescription: data.innovationDescription,
+        outcomesAchieved: data.outcomesAchieved,
+        executionLeadership: data.executionLeadership,
+        sustainScale: data.sustainScale,
+        attachments: data.attachments,
+      });
+
+      // Generate email HTML
+      const emailHTML = generateRegistrationEmailHTML({
+        nomineeName: data.nomineeName,
+        category: data.category,
+        nominationId,
+        emailId: data.emailId,
+      });
+
+      // Send email with PDF attachment
+      await sendEmail({
+        to: data.emailId,
+        subject: `SIMATS EmpowHER Awards 2026 - Nomination Confirmation #${nominationId}`,
+        html: emailHTML,
+        attachments: [
+          {
+            filename: `nomination_${nominationId}_${data.nomineeName.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`,
+            content: pdfBuffer,
+            contentType: 'application/pdf',
+          },
+        ],
+      });
+
+      console.log(`Confirmation email sent to ${data.emailId}`);
+    } catch (emailError) {
+      // Log email error but don't fail the registration
+      console.error('Failed to send confirmation email:', emailError);
     }
     
     return NextResponse.json({

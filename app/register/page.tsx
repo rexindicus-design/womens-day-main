@@ -104,6 +104,7 @@ const newsTickerItems = [
   "📅 Event Date: March 8, 2026 at SIMATS Campus",
   "🎓 SIMATS (Saveetha Institute of Medical and Technical Sciences) celebrates 25 years of excellence",
   "📰 Times of India - India's leading English daily partners for Awards",
+  "📅 The last date for nomination is 23rd February 2026",
 ];
 
 // Word count helper function
@@ -316,7 +317,7 @@ function AttachmentField({
               type="file"
               className="hidden"
               onChange={(e) => onChange("file", e.target.files?.[0] || null)}
-              accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+              accept=".pdf,.jpg,.jpeg,.png"
             />
           </label>
         </div>
@@ -497,10 +498,16 @@ function RegistrationForm() {
       validationErrors.push("Please enter a valid mobile number");
     }
 
-    // File size validation (max 10MB total, 5MB per file)
+    // File size and type validation (max 10MB total, 5MB per file)
+    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+    const allowedExtensions = ['.pdf', '.jpg', '.jpeg', '.png'];
     let totalFileSize = 0;
     attachments.forEach((attachment, index) => {
       if (attachment.file) {
+        const fileExtension = '.' + attachment.file.name.split('.').pop()?.toLowerCase();
+        if (!allowedTypes.includes(attachment.file.type) && !allowedExtensions.includes(fileExtension)) {
+          validationErrors.push(`Attachment ${index + 1}: Only PDF, JPG, JPEG, PNG files are allowed`);
+        }
         if (attachment.file.size > 5 * 1024 * 1024) {
           validationErrors.push(`Attachment ${index + 1} exceeds 5MB limit`);
         }
@@ -1075,7 +1082,7 @@ function RegistrationForm() {
               <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
                 <p className="text-amber-800 text-sm font-medium flex items-center gap-2">
                   <AlertCircle className="w-4 h-4" />
-                  Total file size not more than 10MB
+                  Total file size not more than 10MB. Supported formats: JPEG, JPG, PNG, PDF
                 </p>
                 <p className="text-amber-700 text-xs mt-1">
                   Please refer to the sample guidelines for each category and upload the documents accordingly, ensuring files are appropriately named.
@@ -1264,25 +1271,13 @@ function Footer() {
           <div>
             <h3 className="font-bold text-lg mb-4 text-[#D4AF37]">Contact Us</h3>
             <div className="text-white/70 text-sm space-y-2">
-              <p>SIMATS Campus</p>
+              <p>SIMATS (Saveetha Institute of Medical and Technical Sciences) Campus</p>
               <p>Chennai, Tamil Nadu, India</p>
-              <p>Email: awards@simats.edu.in</p>
-              <p>Phone: +91 44 2745 1234</p>
+              <p className="font-medium text-white/90">Dr. GUNITA ARUN CHANDHOK - 9003286689</p>
+              <p className="font-medium text-white/90">Dr. JOTHILAKSHMY - 9941912481</p>
+              <p>Email: <a href="mailto:simatsempowher.toi@gmail.com" className="hover:text-[#D4AF37] transition-colors">simatsempowher.toi@gmail.com</a></p>
             </div>
-            <div className="flex gap-4 mt-4">
-              <a href="#" className="text-white/70 hover:text-[#D4AF37] transition-colors" aria-label="Facebook">
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a href="#" className="text-white/70 hover:text-[#D4AF37] transition-colors" aria-label="YouTube">
-                <Youtube className="w-5 h-5" />
-              </a>
-              <a href="#" className="text-white/70 hover:text-[#D4AF37] transition-colors" aria-label="Instagram">
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a href="#" className="text-white/70 hover:text-[#D4AF37] transition-colors" aria-label="LinkedIn">
-                <Linkedin className="w-5 h-5" />
-              </a>
-            </div>
+            
           </div>
         </div>
         <div className="mt-12 pt-8 border-t border-white/20 text-center text-sm text-white/50">

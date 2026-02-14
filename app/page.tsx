@@ -35,6 +35,7 @@ const newsTickerItems = [
   "🎓 SIMATS (Saveetha Institute of Medical and Technical Sciences) celebrates 25 years of excellence",
   "📰 Times of India - India's leading English daily partners for Awards",
   "🌟 Special Lifetime Achievement Award announced",
+  "📅 The last date for nomination is 23rd February 2026",
 ];
 
 // Award categories for nomination
@@ -909,23 +910,11 @@ function Footer() {
             <div className="text-white/70 text-sm space-y-2">
               <p>SIMATS (Saveetha Institute of Medical and Technical Sciences) Campus</p>
               <p>Chennai, Tamil Nadu, India</p>
-              <p>Email: awards@simats.edu.in</p>
-              <p>Phone: +91 44 2745 1234</p>
+              <p className="font-medium text-white/90">Dr. GUNITA ARUN CHANDHOK - 9003286689</p>
+              <p className="font-medium text-white/90">Dr. JOTHILAKSHMY - 9941912481</p>
+              <p>Email: <a href="mailto:simatsempowher.toi@gmail.com" className="hover:text-[#D4AF37] transition-colors">simatsempowher.toi@gmail.com</a></p>
             </div>
-            <div className="flex gap-4 mt-4">
-              <a href="#" className="text-white/70 hover:text-[#D4AF37] transition-colors" aria-label="Facebook">
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a href="#" className="text-white/70 hover:text-[#D4AF37] transition-colors" aria-label="YouTube">
-                <Youtube className="w-5 h-5" />
-              </a>
-              <a href="#" className="text-white/70 hover:text-[#D4AF37] transition-colors" aria-label="Instagram">
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a href="#" className="text-white/70 hover:text-[#D4AF37] transition-colors" aria-label="LinkedIn">
-                <Linkedin className="w-5 h-5" />
-              </a>
-            </div>
+              
           </div>
         </div>
         

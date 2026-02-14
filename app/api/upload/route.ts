@@ -40,10 +40,12 @@ export async function POST(request: NextRequest) {
         }
 
         // Validate file type
-        const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'image/jpeg', 'image/png'];
-        if (!allowedTypes.includes(file.type)) {
+        const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+        const allowedExtensions = ['.pdf', '.jpg', '.jpeg', '.png'];
+        const fileExtension = path.extname(file.name).toLowerCase();
+        if (!allowedTypes.includes(file.type) && !allowedExtensions.includes(fileExtension)) {
           return NextResponse.json(
-            { success: false, error: `File ${i + 1} has invalid type. Allowed: PDF, DOC, DOCX, JPG, PNG` },
+            { success: false, error: `File ${i + 1} has invalid type. Allowed: PDF, JPG, JPEG, PNG` },
             { status: 400 }
           );
         }

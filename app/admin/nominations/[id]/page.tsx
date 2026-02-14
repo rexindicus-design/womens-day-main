@@ -48,6 +48,7 @@ export default function NominationDetails({ params }: { params: Promise<{ id: st
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [updating, setUpdating] = useState(false);
+    const [downloading, setDownloading] = useState(false);
 
     useEffect(() => {
         setLoading(true);
@@ -89,6 +90,30 @@ export default function NominationDetails({ params }: { params: Promise<{ id: st
         }
     };
 
+    const handleDownloadPDF = async () => {
+        setDownloading(true);
+        try {
+            const response = await fetch(`/api/nominations/${id}/pdf`);
+            if (!response.ok) {
+                throw new Error('Failed to generate PDF');
+            }
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `nomination_${id}_${nomination?.nominee_name?.replace(/[^a-zA-Z0-9]/g, '_') || 'details'}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } catch (error) {
+            console.error('Download error:', error);
+            alert('Failed to download PDF. Please try again.');
+        } finally {
+            setDownloading(false);
+        }
+    };
+
     if (loading) return (
         <div className="flex justify-center items-center min-h-screen bg-pink-50">
             <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-[#C41E7F]"></div>
@@ -108,11 +133,30 @@ export default function NominationDetails({ params }: { params: Promise<{ id: st
 
                 <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-pink-100">
                     <div className="bg-gradient-to-r from-[#C41E7F] to-[#6B2D5B] p-6 text-white">
-                        <div>
-                            <h1 className="text-3xl font-bold mb-2">{nomination.nominee_name}</h1>
-                            <p className="text-pink-100 text-lg opacity-90">{nomination.category}</p>
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <h1 className="text-3xl font-bold mb-2">{nomination.nominee_name}</h1>
+                                <p className="text-pink-100 text-lg opacity-90">{nomination.category}</p>
+                            </div>
+                            <button
+                                onClick={handleDownloadPDF}
+                                disabled={downloading}
+                                className="flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white border border-white/50 py-2 px-4 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {downloading ? (
+                                    <>
+                                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                        Generating...
+                                    </>
+                                ) : (
+                                    <>
+                                        <Download size={16} />
+                                        Download PDF
+                                    </>
+                                )}
+                            </button>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2 mt-4">
                             <span className={`px-3 py-1 text-sm font-bold rounded-full uppercase tracking-wide bg-white shadow-sm ${nomination.status === 'selected' ? 'text-green-700' :
                                 nomination.status === 'rejected' ? 'text-red-700' :
                                     'text-yellow-700'

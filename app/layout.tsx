@@ -39,7 +39,9 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${playfair.variable} ${greatVibes.variable} ${cormorant.variable} antialiased font-sans`}
       >
+        
         {children}
+
       </body>
     </html>
   );
