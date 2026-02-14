@@ -39,9 +39,9 @@ const awardCategories = [
   "Woman Entrepreneur of the Year(All Industries)",
   "Woman Founder – DeepTech/IP-led Innovation",
   "Grassroots Woman Social Changemaker",
-  "Star – Tamil Cinema, Television",
+  "Star ( Tamil Cinema / Television )",
   "Excellence in Music (Carnatic / Film)",
-  "Excellence in Dance & Performing Arts",
+  "Excellence in Dance & Performing Arts(Bharatanatyam / Folk / Theatre)",
   "SIMATS Life Time Achievement Award",
   "Others",
 ];
@@ -497,8 +497,22 @@ function RegistrationForm() {
       validationErrors.push("Please enter a valid mobile number");
     }
 
+    // File size validation (max 10MB total, 5MB per file)
+    let totalFileSize = 0;
+    attachments.forEach((attachment, index) => {
+      if (attachment.file) {
+        if (attachment.file.size > 5 * 1024 * 1024) {
+          validationErrors.push(`Attachment ${index + 1} exceeds 5MB limit`);
+        }
+        totalFileSize += attachment.file.size;
+      }
+    });
+    if (totalFileSize > 10 * 1024 * 1024) {
+      validationErrors.push("Total file size exceeds 10MB limit");
+    }
+
     return validationErrors;
-  }, [formData, wordCounts, wordLimits]);
+  }, [formData, wordCounts, wordLimits, attachments]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -514,12 +528,12 @@ function RegistrationForm() {
     setIsSubmitting(true);
     
     try {
-      // Prepare attachments data (only name and link, as file upload would need separate handling)
+      // Prepare attachments data (name and link for initial submission)
       const attachmentData = attachments
-        .filter(a => a.name || a.link)
+        .filter(a => a.name || a.link || a.file)
         .map(a => ({ name: a.name, link: a.link }));
 
-      // Submit to API
+      // Submit form data to API
       const response = await fetch('/api/register', {
         method: 'POST',
         headers: {
@@ -542,6 +556,32 @@ function RegistrationForm() {
         }
         window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
+      }
+
+      // Upload files if any exist
+      const hasFiles = attachments.some(a => a.file !== null);
+      if (hasFiles && result.nominationId) {
+        const uploadFormData = new FormData();
+        uploadFormData.append('nominationId', result.nominationId.toString());
+        
+        attachments.forEach((attachment, index) => {
+          if (attachment.file) {
+            uploadFormData.append(`file_${index}`, attachment.file);
+          }
+          uploadFormData.append(`name_${index}`, attachment.name);
+          uploadFormData.append(`link_${index}`, attachment.link);
+        });
+
+        const uploadResponse = await fetch('/api/upload', {
+          method: 'POST',
+          body: uploadFormData,
+        });
+
+        if (!uploadResponse.ok) {
+          const uploadResult = await uploadResponse.json();
+          console.warn('File upload warning:', uploadResult.error);
+          // Don't fail the whole submission, just log the warning
+        }
       }
 
       // Success
