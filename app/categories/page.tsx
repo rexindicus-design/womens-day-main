@@ -23,7 +23,6 @@ const navItems = [
 const categoryGroups = [
   {
     title: "Professionals & Leaders",
-    subtitle: "6 Awards",
     color: "navy",
     categories: [
       {
@@ -54,7 +53,6 @@ const categoryGroups = [
   },
   {
     title: "Entrepreneurs",
-    subtitle: "6 Awards",
     color: "gold",
     categories: [
       {
@@ -73,12 +71,11 @@ const categoryGroups = [
   },
   {
     title: "Arts, Culture & Entertainment",
-    subtitle: "3 Awards",
     color: "red",
     categories: [
       {
-        title: "Star – Tamil Cinema, Television",
-        description: "Recognising exceptional talent and contribution to Tamil cinema and television industry.",
+        title: "Star – Indian Cinema, Television",
+        description: "Recognising exceptional talent and contribution to Indian cinema and television industry.",
       },
       {
         title: "Excellence in Music (Carnatic / Film)",
@@ -357,9 +354,14 @@ function CategoryGroup({ group }: { group: typeof categoryGroups[0] }) {
 // Categories Content Component
 function CategoriesContent() {
   return (
-    <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-white to-pink-50/50">
+    <section className="pt-4 sm:pt-6 lg:pt-8 pb-12 sm:pb-16 lg:pb-20 bg-gradient-to-b from-white to-pink-50/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
+          <img 
+            src="/logo.png" 
+            alt="Logo" 
+            className="mx-auto mb-6 w-32 sm:w-40 md:w-48 lg:w-56 h-auto object-contain drop-shadow-lg"
+          />
           <div className="w-24 h-1 bg-gradient-to-r from-[#C41E7F] to-[#D4AF37] mx-auto mb-8 rounded-full"></div>
           <h2 className="font-serif text-2xl sm:text-3xl text-[#C41E7F] mb-4 font-bold">
             Award Categories
@@ -367,7 +369,6 @@ function CategoriesContent() {
           <p className="text-gray-600 max-w-3xl mx-auto">
             The Women&apos;s Day Achievement Awards 2026 celebrates excellence across multiple categories, 
             recognizing outstanding women who are making a difference in their respective fields. 
-            
           </p>
         </div>
 

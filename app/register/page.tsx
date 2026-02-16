@@ -39,7 +39,7 @@ const awardCategories = [
   "Woman Entrepreneur of the Year(All Industries)",
   "Woman Founder – DeepTech/IP-led Innovation",
   "Grassroots Woman Social Changemaker",
-  "Star ( Tamil Cinema / Television )",
+  "Star – Indian Cinema, Television",
   "Excellence in Music (Carnatic / Film)",
   "Excellence in Dance & Performing Arts(Bharatanatyam / Folk / Theatre)",
   "SIMATS Life Time Achievement Award",
@@ -61,40 +61,105 @@ const sectorOptions = [
   "Other",
 ];
 
-// Tamil Nadu Districts
-const tamilNaduDistricts = [
+// Pan-India Cities/Districts (sample major cities, can be expanded as needed)
+const panIndiaCities = [
+  "Mumbai",
+  "Delhi",
+  "Bengaluru",
+  "Hyderabad",
+  "Ahmedabad",
   "Chennai",
-  "Coimbatore",
+  "Kolkata",
+  "Pune",
+  "Jaipur",
+  "Lucknow",
+  "Kanpur",
+  "Nagpur",
+  "Indore",
+  "Bhopal",
+  "Patna",
+  "Ludhiana",
+  "Agra",
+  "Nashik",
+  "Vadodara",
+  "Faridabad",
+  "Meerut",
+  "Rajkot",
+  "Varanasi",
+  "Srinagar",
+  "Aurangabad",
+  "Dhanbad",
+  "Amritsar",
+  "Allahabad",
+  "Ranchi",
+  "Howrah",
+  "Gwalior",
+  "Jabalpur",
+  "Vijayawada",
+  "Jodhpur",
   "Madurai",
+  "Raipur",
+  "Kota",
+  "Guwahati",
+  "Chandigarh",
+  "Solapur",
+  "Hubli–Dharwad",
+  "Mysore",
   "Tiruchirappalli",
-  "Salem",
-  "Tirunelveli",
+  "Bareilly",
+  "Aligarh",
   "Tiruppur",
-  "Vellore",
+  "Moradabad",
+  "Jalandhar",
+  "Bhubaneswar",
+  "Salem",
+  "Warangal",
+  "Guntur",
+  "Bhiwandi",
+  "Saharanpur",
+  "Gorakhpur",
+  "Bikaner",
+  "Amravati",
+  "Noida",
+  "Jamshedpur",
+  "Bhilai",
+  "Cuttack",
+  "Firozabad",
+  "Kochi",
+  "Nellore",
+  "Bhavnagar",
+  "Dehradun",
+  "Durgapur",
+  "Asansol",
+  "Rourkela",
+  "Nanded",
+  "Kolhapur",
+  "Ajmer",
+  "Akola",
+  "Gulbarga",
+  "Jamnagar",
+  "Ujjain",
+  "Loni",
+  "Siliguri",
+  "Jhansi",
+  "Ulhasnagar",
+  "Jammu",
+  "Sangli-Miraj & Kupwad",
+  "Mangalore",
   "Erode",
-  "Thoothukkudi",
-  "Dindigul",
-  "Thanjavur",
-  "Ranipet",
-  "Sivaganga",
-  "Karur",
-  "Udhagamandalam (Ooty)",
-  "Hosur",
-  "Nagercoil",
-  "Kanchipuram",
-  "Kumarapalayam",
-  "Karaikkudi",
-  "Neyveli",
-  "Cuddalore",
-  "Kumbakonam",
-  "Tiruvannamalai",
-  "Pollachi",
-  "Rajapalayam",
-  "Gudiyatham",
-  "Pudukkottai",
-  "Vaniyambadi",
-  "Ambur",
-  "Nagapattinam",
+  "Belgaum",
+  "Kurnool",
+  "Kozhikode",
+  "Udaipur",
+  "Maheshtala",
+  "Davanagere",
+  "Kamarhati",
+  "South Dumdum",
+  "Tirunelveli",
+  "Malegaon",
+  "Gaya",
+  "Tirupati",
+  "Dharwad",
   "Other",
 ];
 
@@ -512,11 +577,18 @@ function RegistrationForm() {
       validationErrors.push("Please enter a valid mobile number");
     }
 
-    // File size and type validation (max 10MB total, 5MB per file)
+    // File size and type validation (5MB per file)
     const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
     const allowedExtensions = ['.pdf', '.jpg', '.jpeg', '.png'];
     let totalFileSize = 0;
+
+    let atLeastOneAttachment = false;
     attachments.forEach((attachment, index) => {
+      // Require at least one of file or link for each attachment
+      if (attachment.file || (attachment.link && attachment.link.trim() !== "")) {
+        atLeastOneAttachment = true;
+      }
+      // If file is present, validate type and size
       if (attachment.file) {
         const fileExtension = '.' + attachment.file.name.split('.').pop()?.toLowerCase();
         if (!allowedTypes.includes(attachment.file.type) && !allowedExtensions.includes(fileExtension)) {
@@ -525,12 +597,12 @@ function RegistrationForm() {
         if (attachment.file.size > 5 * 1024 * 1024) {
           validationErrors.push(`Attachment ${index + 1} exceeds 5MB limit`);
         }
-        totalFileSize += attachment.file.size;
       }
     });
-    if (totalFileSize > 10 * 1024 * 1024) {
-      validationErrors.push("Total file size exceeds 10MB limit");
+    if (!atLeastOneAttachment) {
+      validationErrors.push("At least one supporting document (file upload or link) is required.");
     }
+
 
     return validationErrors;
   }, [formData, wordCounts, wordLimits, attachments]);
@@ -642,10 +714,15 @@ function RegistrationForm() {
   }
 
   return (
-    <section className="py-12 sm:py-16 bg-gradient-to-br from-pink-50 to-purple-50">
+    <section className="pt-4 sm:pt-6 pb-12 sm:pb-16 bg-gradient-to-br from-pink-50 to-purple-50">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Form Header */}
         <div className="text-center mb-10">
+          <img 
+            src="/logo.png" 
+            alt="Logo" 
+            className="mx-auto mb-6 w-32 sm:w-40 md:w-48 lg:w-56 h-auto object-contain drop-shadow-lg"
+          />
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#C41E7F] to-[#D4AF37] text-white px-6 py-2 rounded-full text-sm font-medium mb-4">
             <Star className="w-4 h-4" />
             SIMATS EmpowerHER Awards 2026
@@ -675,7 +752,7 @@ function RegistrationForm() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-8">
-          {/* Section 0: Choose Category */}
+          {/* Section 1: Choose Category */}
           <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-pink-100">
             <SectionHeader number={0} title="Choose Category" bgColor="bg-[#C41E7F]" />
             <div className="p-6">
@@ -694,7 +771,7 @@ function RegistrationForm() {
             </div>
           </div>
 
-          {/* Section 1: Participant Information */}
+          {/* Section 2: Participant Information */}
           <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-pink-100">
             <SectionHeader number={1} title="Participant Information" bgColor="bg-[#D4AF37]" />
             <div className="p-6 space-y-6">
@@ -766,7 +843,7 @@ function RegistrationForm() {
                   />
                 </div>
                 <div>
-                  <FieldLabel label="City & District (Tamil Nadu)" required />
+                  <FieldLabel label="City & District (Pan-India)" required />
                   <select
                     name="cityDistrict"
                     value={formData.cityDistrict}
@@ -774,8 +851,8 @@ function RegistrationForm() {
                     className="w-full px-4 py-3 border border-pink-200 rounded-xl focus:ring-2 focus:ring-[#C41E7F] focus:border-transparent bg-white"
                   >
                     <option value="">Select city/district</option>
-                    {tamilNaduDistricts.map((district) => (
-                      <option key={district} value={district}>{district}</option>
+                    {panIndiaCities.map((city) => (
+                      <option key={city} value={city}>{city}</option>
                     ))}
                   </select>
                 </div>
@@ -904,7 +981,7 @@ function RegistrationForm() {
             </div>
           </div>
 
-          {/* Section 2: Case Study */}
+          {/* Section 3: Case Study */}
           <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-pink-100">
             <SectionHeader number={2} title="Case Study Section" bgColor="bg-[#6B2D5B]" />
             <div className="p-6 space-y-6">
@@ -1089,14 +1166,14 @@ function RegistrationForm() {
             </div>
           </div>
 
-          {/* Section 3: Supporting Documents */}
+          {/* Section 4: Supporting Documents */}
           <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-pink-100">
             <SectionHeader number={3} title="Supporting Documents" bgColor="bg-[#C41E7F]" />
             <div className="p-6 space-y-4">
               <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
                 <p className="text-amber-800 text-sm font-medium flex items-center gap-2">
                   <AlertCircle className="w-4 h-4" />
-                  Total file size not more than 10MB. Supported formats: JPEG, JPG, PNG, PDF
+                  Supported formats: JPEG, JPG, PNG, PDF. Maximum size per file: 5MB.
                 </p>
                 <p className="text-amber-700 text-xs mt-1">
                   Please refer to the sample guidelines for each category and upload the documents accordingly, ensuring files are appropriately named.
@@ -1115,7 +1192,7 @@ function RegistrationForm() {
             </div>
           </div>
 
-          {/* Section 4: Declaration */}
+          {/* Section 5: Declaration */}
           <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-pink-100">
             <SectionHeader number={4} title="Declaration" bgColor="bg-[#2D1B4E]" />
             <div className="p-6 space-y-4">

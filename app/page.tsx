@@ -187,12 +187,22 @@ function HeroSection() {
   return (
     <section className="relative overflow-hidden">
       {/* Banner Image */}
-      <div className="w-full max-h-[590px] overflow-hidden">
+      <div className="w-full max-h-[590px] overflow-hidden relative">
         <img 
           src="/banner.png" 
           alt="Women's Day Awards Nomination" 
           className="w-full h-auto object-cover"
         />
+        {/* Overlay clickable area for 'Nominate Now' */}
+        <a
+          href="/register"
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 block"
+          style={{ width: '220px', height: '60px', zIndex: 10 }}
+          aria-label="Nominate Now"
+        >
+          {/* Optionally, add a visually hidden span for accessibility */}
+          <span className="sr-only">Nominate Now</span>
+        </a>
       </div>
     </section>
   );
@@ -356,6 +366,9 @@ function HowToNominateSection() {
             
             {/* Important notice box */}
             <div className="border border-[#D4AF37] p-4 mt-8 rounded-lg bg-white/5">
+            <h6 className="font-serif text-base sm:text-lg text-white mb-2 font-bold">
+              Terms & Conditions
+            </h6>
               <p className="text-white/90 text-sm">
                 It is essential that both nominee and nominator are aware of the terms & conditions of the 
                 nomination and that both parties are aware that the submission has been made.
