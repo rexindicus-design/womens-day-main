@@ -131,6 +131,20 @@ function NewsTicker() {
 function DualLogo() {
   return (
     <a href="/" className="flex items-center gap-3 sm:gap-4">
+         {/* empowher_award */}
+      <div className="flex items-center gap-2">
+        <img 
+          src="/logo.png" 
+          alt="SIMATS (empowher_award) " 
+          className="w-14 h-14 sm:w-16 sm:h-16 object-contain"
+        />
+        <div className="hidden sm:block">
+          <div className="text-[#C41E7F] font-bold text-sm leading-tight">EMPOWHER</div>
+          <div className="text-gray-500 text-xs">Awards</div>
+        </div>
+      </div>
+       <div className="h-8 sm:h-10 w-px bg-gray-300"></div>
+      
       <div className="flex items-center gap-2">
         <img 
           src="/simats.png" 
@@ -139,7 +153,7 @@ function DualLogo() {
         />
         <div className="hidden sm:block">
           <div className="text-[#C41E7F] font-bold text-sm leading-tight">SIMATS</div>
-          <div className="text-gray-500 text-xs">Saveetha Institute</div>
+          <div className="text-gray-500 text-xs">Saveetha Institute of Medical and Technical Sciences</div>
         </div>
       </div>
       <div className="h-8 sm:h-10 w-px bg-gray-300"></div>
