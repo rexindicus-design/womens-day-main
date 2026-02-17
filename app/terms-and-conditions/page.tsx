@@ -24,6 +24,25 @@ body { font-family: Arial, sans-serif; }
 .section-title { margin-bottom: 30px; font-weight: bold; }
 footer { background: #111; color: white; padding: 20px; text-align: center; }
 .table th { background: #6a11cb; color: white; }
+.back-btn {
+  display: block;
+  margin: 40px auto 32px auto;
+  padding: 14px 36px;
+  background: linear-gradient(90deg,#C41E7F,#D4AF37);
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(196,30,127,0.08);
+  transition: background 0.2s, transform 0.2s;
+  text-decoration: none;
+}
+.back-btn:hover {
+  background: linear-gradient(90deg,#D4AF37,#C41E7F);
+  color: #fff;
+  transform: scale(1.04);
+}
 </style>
 </head>
 <body>
@@ -310,6 +329,7 @@ v. Other conditions/situations or failures beyond its control
 <li><strong>14.1</strong> Participants warrant that their entry submission is their own original work and, as such, they are the sole and exclusive owner and rights holder of the entry submitted and that they have the right to submit the entry in the listing and grant all required licenses. Each Participant agrees not to submit any entry that: (a) infringes any third-party proprietary rights, intellectual property rights, industrial property rights, personal or moral rights or any other rights, including without limitation, copyright, trademark, trade names, industrial designs, patent, trade secret, privacy, publicity, or confidentiality obligations; or (b) otherwise violates applicable state, federal, or local law</li>
 <li><strong>14.2</strong> To the maximum extent permitted by law, Participant indemnifies and agrees to always keep indemnified Management from and against any liability, claims, demands, losses, damages, costs, and expenses resulting from any act, default, or omission of the Participant and/or a breach of any warranty set forth herein. To the maximum extent permitted by law, Participant agrees to defend, indemnify and hold harmless Management from and against any and all claims, actions, suits or proceedings, as well as any and all losses, liabilities, damages, costs and expenses (including reasonable attorney’s fees) arising out of or accruing from: (i) any entry submission or other material uploaded or otherwise provided by Participant that infringes any copyright, trademark, trade secret, trade dress, patent or other intellectual property right of any person or defames any person or violates their rights of publicity or privacy; (ii) any misrepresentation made by Participant in connection with the listing; (iii) any non-compliance by Participant with these Terms; (iv) claims brought by persons or entities other than the parties to these Terms arising from or related to Participant’s involvement with the listing; (v) acceptance, possession, misuse or use of any prize or participation in any activity related to the listing or participation in the listing; (vi) any malfunction or other problem with the listing Website in relation to the entry and participation in the listing by Participant; (vii) any error in the collection, processing, or retention of entry or voting information in relation to the entry and participation in the listing by Participant and in the voting process by consumers; or (viii) any typographical or other error in the printing, offering or announcement of any prize or winners in relation to the entry and participation in the listing by Participant.</li>
 </ul>
+  <a href="/register" class="back-btn">&#8592; Back to Registration</a>
 </div>
 <footer>
 <p>© 2026 SIMATS EmpowerHER Awards | All Rights Reserved</p>

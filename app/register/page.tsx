@@ -454,8 +454,15 @@ interface FormData {
 
 // Main Registration Form Component
 function RegistrationForm() {
+
   // Track if T&C page was visited
   const [tncVisited, setTncVisited] = useState(false);
+
+  // LocalStorage keys
+  const FORM_DATA_KEY = "registerFormData";
+  const ATTACHMENTS_KEY = "registerAttachments";
+
+  // Restore form data and attachments from localStorage on mount
   useEffect(() => {
     if (typeof window !== "undefined") {
       setTncVisited(localStorage.getItem("tncVisited") === "true");
@@ -465,13 +472,66 @@ function RegistrationForm() {
         }
       };
       window.addEventListener("storage", handleStorage);
+
+      // Restore form data
+      const savedForm = localStorage.getItem(FORM_DATA_KEY);
+      const initialFormData: FormData = savedForm ? JSON.parse(savedForm) : {
+        category: "",
+        nomineeName: "",
+        gender: "",
+        dateOfBirth: "",
+        mobileNumber: "",
+        emailId: "",
+        cityDistrict: "",
+        designation: "",
+        organization: "",
+        officeAddress: "",
+        yearsInOrg: "",
+        yearsInDesignation: "",
+        yearOfIncorporation: "",
+        revenue: "",
+        websiteUrl: "",
+        socialMediaLinks: "",
+        sector: "",
+        otherSector: "",
+        initiativeTitle: "",
+        startDate: "",
+        endDate: "",
+        innovationDescription: "",
+        outcomesAchieved: "",
+        executionLeadership: "",
+        sustainScale: "",
+        declarationAccepted: false,
+      };
+      setFormData(initialFormData);
+
+      // Restore attachments (files cannot be restored, only name/link)
+      const savedAttachments = localStorage.getItem(ATTACHMENTS_KEY);
+      let initialAttachments = [
+        { name: "", file: null as File | null, link: "" },
+        { name: "", file: null as File | null, link: "" },
+        { name: "", file: null as File | null, link: "" },
+        { name: "", file: null as File | null, link: "" },
+        { name: "", file: null as File | null, link: "" },
+      ];
+      if (savedAttachments) {
+        try {
+          const parsed = JSON.parse(savedAttachments);
+          initialAttachments = initialAttachments.map((a, i) => ({
+            ...a,
+            name: parsed[i]?.name || "",
+            link: parsed[i]?.link || "",
+          }));
+        } catch {}
+      }
+      setAttachments(initialAttachments);
+
       return () => window.removeEventListener("storage", handleStorage);
     }
   }, []);
+
   const [formData, setFormData] = useState<FormData>({
-    // Section 0
     category: "",
-    // Section 1
     nomineeName: "",
     gender: "",
     dateOfBirth: "",
@@ -487,7 +547,6 @@ function RegistrationForm() {
     revenue: "",
     websiteUrl: "",
     socialMediaLinks: "",
-    // Section 2
     sector: "",
     otherSector: "",
     initiativeTitle: "",
@@ -497,7 +556,6 @@ function RegistrationForm() {
     outcomesAchieved: "",
     executionLeadership: "",
     sustainScale: "",
-    // Section 4
     declarationAccepted: false,
   });
 
@@ -531,16 +589,28 @@ function RegistrationForm() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value
-    }));
+    setFormData(prev => {
+      const updated = {
+        ...prev,
+        [name]: type === "checkbox" ? checked : value
+      };
+      // Persist to localStorage
+      if (typeof window !== "undefined") {
+        localStorage.setItem(FORM_DATA_KEY, JSON.stringify(updated));
+      }
+      return updated;
+    });
   };
 
   const handleAttachmentChange = (index: number, field: string, value: string | File | null) => {
     setAttachments(prev => {
       const updated = [...prev];
       updated[index] = { ...updated[index], [field]: value };
+      // Only persist name and link (not file)
+      if (typeof window !== "undefined") {
+        const persist = updated.map(a => ({ name: a.name, link: a.link }));
+        localStorage.setItem(ATTACHMENTS_KEY, JSON.stringify(persist));
+      }
       return updated;
     });
   };
@@ -692,7 +762,11 @@ function RegistrationForm() {
         }
       }
 
-      // Success
+      // Success: clear localStorage for form and attachments
+      if (typeof window !== "undefined") {
+        localStorage.removeItem(FORM_DATA_KEY);
+        localStorage.removeItem(ATTACHMENTS_KEY);
+      }
       setSubmitSuccess(true);
     } catch (error) {
       console.error('Submission error:', error);
@@ -1241,11 +1315,14 @@ function RegistrationForm() {
                   />
                   <span className="text-sm text-gray-700 font-medium">
                     I/We agree to all the above declarations and <a href="/terms-and-conditions" target="_blank" rel="noopener noreferrer" className="underline text-[#C41E7F]">Terms and Condition</a>. <span className="text-red-500">*</span>
-                    {!tncVisited && (
-                      <span className="ml-2 text-xs text-red-500">Please read the Terms and Conditions before agreeing.</span>
-                    )}
                   </span>
                 </label>
+                {!tncVisited && (
+                  <div className="mt-2 text-xs text-red-600 font-semibold flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" /></svg>
+                    It is <span className="font-bold">mandatory</span> to visit and read the Terms and Conditions page before you can agree and submit your registration.
+                  </div>
+                )}
               </div>
             </div>
           </div>
