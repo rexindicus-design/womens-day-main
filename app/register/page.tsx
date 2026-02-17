@@ -454,6 +454,20 @@ interface FormData {
 
 // Main Registration Form Component
 function RegistrationForm() {
+  // Track if T&C page was visited
+  const [tncVisited, setTncVisited] = useState(false);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setTncVisited(localStorage.getItem("tncVisited") === "true");
+      const handleStorage = (event: StorageEvent) => {
+        if (event.key === "tncVisited") {
+          setTncVisited(event.newValue === "true");
+        }
+      };
+      window.addEventListener("storage", handleStorage);
+      return () => window.removeEventListener("storage", handleStorage);
+    }
+  }, []);
   const [formData, setFormData] = useState<FormData>({
     // Section 0
     category: "",
@@ -550,6 +564,7 @@ function RegistrationForm() {
     if (!formData.outcomesAchieved) validationErrors.push("Outcomes achieved is required");
     if (!formData.executionLeadership) validationErrors.push("Execution & leadership description is required");
     if (!formData.declarationAccepted) validationErrors.push("You must accept the declaration to submit");
+    if (!tncVisited) validationErrors.push("You must visit and read the Terms and Conditions page before submitting the registration.");
 
     // Word limit validation
     if (wordCounts.innovationDescription > wordLimits.innovationDescription) {
@@ -605,7 +620,7 @@ function RegistrationForm() {
 
 
     return validationErrors;
-  }, [formData, wordCounts, wordLimits, attachments]);
+  }, [formData, wordCounts, wordLimits, attachments, tncVisited]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -754,7 +769,7 @@ function RegistrationForm() {
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Section 1: Choose Category */}
           <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-pink-100">
-            <SectionHeader number={0} title="Choose Category" bgColor="bg-[#C41E7F]" />
+            <SectionHeader number={1} title="Choose Category" bgColor="bg-[#C41E7F]" />
             <div className="p-6">
               <FieldLabel label="Category applying for" required />
               <select
@@ -773,7 +788,7 @@ function RegistrationForm() {
 
           {/* Section 2: Participant Information */}
           <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-pink-100">
-            <SectionHeader number={1} title="Participant Information" bgColor="bg-[#D4AF37]" />
+            <SectionHeader number={2} title="Participant Information" bgColor="bg-[#D4AF37]" />
             <div className="p-6 space-y-6">
               {/* Row 1 */}
               <div className="grid md:grid-cols-2 gap-6">
@@ -983,7 +998,7 @@ function RegistrationForm() {
 
           {/* Section 3: Case Study */}
           <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-pink-100">
-            <SectionHeader number={2} title="Case Study Section" bgColor="bg-[#6B2D5B]" />
+            <SectionHeader number={3} title="Case Study Section" bgColor="bg-[#6B2D5B]" />
             <div className="p-6 space-y-6">
               {/* Sector Selection */}
               <div>
@@ -1168,7 +1183,7 @@ function RegistrationForm() {
 
           {/* Section 4: Supporting Documents */}
           <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-pink-100">
-            <SectionHeader number={3} title="Supporting Documents" bgColor="bg-[#C41E7F]" />
+            <SectionHeader number={4} title="Supporting Documents" bgColor="bg-[#C41E7F]" />
             <div className="p-6 space-y-4">
               <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
                 <p className="text-amber-800 text-sm font-medium flex items-center gap-2">
@@ -1194,7 +1209,7 @@ function RegistrationForm() {
 
           {/* Section 5: Declaration */}
           <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-pink-100">
-            <SectionHeader number={4} title="Declaration" bgColor="bg-[#2D1B4E]" />
+            <SectionHeader number={5} title="Declaration" bgColor="bg-[#2D1B4E]" />
             <div className="p-6 space-y-4">
               <div className="bg-gray-50 rounded-lg p-4 text-sm text-gray-700 space-y-4">
                 <p>
@@ -1222,14 +1237,15 @@ function RegistrationForm() {
                     checked={formData.declarationAccepted}
                     onChange={handleInputChange}
                     className="mt-1 w-5 h-5 text-[#C41E7F] border-pink-300 rounded focus:ring-[#C41E7F]"
+                    disabled={!tncVisited}
                   />
                   <span className="text-sm text-gray-700 font-medium">
-                    I/We agree to all the above declarations and terms. <span className="text-red-500">*</span>
+                    I/We agree to all the above declarations and <a href="/terms-and-conditions" target="_blank" rel="noopener noreferrer" className="underline text-[#C41E7F]">Terms and Condition</a>. <span className="text-red-500">*</span>
+                    {!tncVisited && (
+                      <span className="ml-2 text-xs text-red-500">Please read the Terms and Conditions before agreeing.</span>
+                    )}
                   </span>
                 </label>
-                <p className="text-xs text-gray-500 mt-2 ml-8">
-                  (This checkbox must be ticked to submit the form)
-                </p>
               </div>
             </div>
           </div>
