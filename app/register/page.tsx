@@ -454,9 +454,6 @@ interface FormData {
 // Main Registration Form Component
 function RegistrationForm() {
 
-  // Track if T&C page was visited
-  const [tncVisited, setTncVisited] = useState(false);
-
   // LocalStorage keys
   const FORM_DATA_KEY = "registerFormData";
   const ATTACHMENTS_KEY = "registerAttachments";
@@ -464,14 +461,6 @@ function RegistrationForm() {
   // Restore form data and attachments from localStorage on mount
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setTncVisited(localStorage.getItem("tncVisited") === "true");
-      const handleStorage = (event: StorageEvent) => {
-        if (event.key === "tncVisited") {
-          setTncVisited(event.newValue === "true");
-        }
-      };
-      window.addEventListener("storage", handleStorage);
-
       // Restore form data
       const savedForm = localStorage.getItem(FORM_DATA_KEY);
       const initialFormData: FormData = savedForm ? JSON.parse(savedForm) : {
@@ -524,8 +513,6 @@ function RegistrationForm() {
         } catch {}
       }
       setAttachments(initialAttachments);
-
-      return () => window.removeEventListener("storage", handleStorage);
     }
   }, []);
 
@@ -569,6 +556,9 @@ function RegistrationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
+  const [showModal, setShowModal] = useState(false);
+  const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
+  const [modalAgreed, setModalAgreed] = useState(false);
 
   // Word counts
   const wordCounts = {
@@ -632,8 +622,6 @@ function RegistrationForm() {
     if (!formData.innovationDescription) validationErrors.push("Innovation description is required");
     if (!formData.outcomesAchieved) validationErrors.push("Outcomes achieved is required");
     if (!formData.executionLeadership) validationErrors.push("Execution & leadership description is required");
-    if (!formData.declarationAccepted) validationErrors.push("You must accept the declaration to submit");
-    if (!tncVisited) validationErrors.push("You must visit and read the Terms and Conditions page before submitting the registration.");
 
     // Word limit validation
     if (wordCounts.innovationDescription > wordLimits.innovationDescription) {
@@ -686,7 +674,7 @@ function RegistrationForm() {
 
 
     return validationErrors;
-  }, [formData, wordCounts, wordLimits, attachments, tncVisited]);
+  }, [formData, wordCounts, wordLimits, attachments]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -699,7 +687,21 @@ function RegistrationForm() {
     }
 
     setErrors([]);
+    // Show modal instead of submitting directly
+    setShowModal(true);
+    setHasScrolledToBottom(false);
+    setModalAgreed(false);
+  };
+
+  const handleFinalSubmit = async () => {
     setIsSubmitting(true);
+    setShowModal(false);
+    
+    // User has agreed to T&C via modal, set declarationAccepted to true
+    const submissionData = {
+      ...formData,
+      declarationAccepted: true,
+    };
     
     try {
       // Prepare attachments data (name and link for initial submission)
@@ -714,7 +716,7 @@ function RegistrationForm() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          ...formData,
+          ...submissionData,
           attachments: attachmentData,
         }),
       });
@@ -770,6 +772,14 @@ function RegistrationForm() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleModalScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const element = e.currentTarget;
+    const isAtBottom = element.scrollHeight - element.scrollTop <= element.clientHeight + 50;
+    if (isAtBottom && !hasScrolledToBottom) {
+      setHasScrolledToBottom(true);
     }
   };
 
@@ -1299,36 +1309,245 @@ function RegistrationForm() {
                   I/We further agree that the decision of the Jury/Awards Management/BCCL shall be final and binding. I/We shall not raise any claims or initiate any action against BCCL, its affiliates, directors, management, employees, agents, or authorized representatives in relation to participation, selection, shortlisting, or winning. Any public statements/claims (including on social media) that misrepresent the Awards process may lead to disqualification.
                 </p>
               </div>
-
-              <div className="pt-4">
-                <label className="flex items-start gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    name="declarationAccepted"
-                    checked={formData.declarationAccepted}
-                    onChange={handleInputChange}
-                    className="mt-1 w-5 h-5 text-[#C41E7F] border-pink-300 rounded focus:ring-[#C41E7F]"
-                    disabled={!tncVisited}
-                  />
-                  <span className="text-sm text-gray-700 font-medium">
-                    I/We agree to all the above declarations and <a href="/terms-and-conditions" target="_blank" rel="noopener noreferrer" className="underline text-[#C41E7F]">Terms and Condition</a>. <span className="text-red-500">*</span>
-                  </span>
-                </label>
-                {!tncVisited && (
-                  <div className="mt-2 text-xs text-red-600 font-semibold flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" /></svg>
-                    It is <span className="font-bold">mandatory</span> to visit and read the Terms and Conditions page before you can agree and submit your registration.
-                  </div>
-                )}
+              <div className="pt-2">
+                <p className="text-sm text-gray-600 italic">
+                  By clicking "Submit Nomination" below, you will be asked to review and accept the full Terms and Conditions.
+                </p>
               </div>
             </div>
           </div>
+
+          {/* Terms and Conditions Modal */}
+          {showModal && (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+              <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col">
+                {/* Modal Header */}
+                <div className="bg-gradient-to-r from-[#C41E7F] to-[#D4AF37] text-white px-6 py-4 rounded-t-2xl">
+                  <h3 className="text-2xl font-bold">SIMATS EmpowerHER Awards 2026 - Terms &amp; Conditions</h3>
+                  <p className="text-sm text-white/90 mt-1">Please read and scroll to the bottom to continue</p>
+                </div>
+
+                {/* Modal Content - Scrollable */}
+                <div 
+                  className="flex-1 overflow-y-auto px-6 py-6 space-y-6 text-sm text-gray-700"
+                  onScroll={handleModalScroll}
+                >
+                  {/* Section 1: Definition */}
+                  <div>
+                    <h3 className="font-bold text-lg text-[#C41E7F] mb-3">1. Definition</h3>
+                    <div className="overflow-x-auto">
+                      <table className="w-full border-collapse text-sm">
+                        <thead>
+                          <tr className="bg-[#6a11cb] text-white">
+                            <th className="border border-gray-300 px-3 py-2 text-left">Term</th>
+                            <th className="border border-gray-300 px-3 py-2 text-left">Description</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr><td className="border border-gray-300 px-3 py-2 font-medium">Listing</td><td className="border border-gray-300 px-3 py-2">SIMATS EmpowerHER Awards 2026</td></tr>
+                          <tr><td className="border border-gray-300 px-3 py-2 font-medium">Management</td><td className="border border-gray-300 px-3 py-2">Bennett Coleman &amp; Co. Ltd / or organizers are responsible for the overall conduct of the listing</td></tr>
+                          <tr><td className="border border-gray-300 px-3 py-2 font-medium">Participant</td><td className="border border-gray-300 px-3 py-2">Women professionals, entrepreneurs, and artists residing in India since the past two years as on December 31, 2025 are eligible to participate.</td></tr>
+                          <tr><td className="border border-gray-300 px-3 py-2 font-medium">Jury</td><td className="border border-gray-300 px-3 py-2">A group of experts identified by Management for evaluation/review of the entries based on pre-defined evaluation parameters.</td></tr>
+                          <tr><td className="border border-gray-300 px-3 py-2 font-medium">Terms and conditions</td><td className="border border-gray-300 px-3 py-2">The terms governing the listing, as may be amended from time to time by the Management.</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <ul className="list-disc list-inside mt-3 space-y-2 text-gray-600">
+                      <li><strong>1.1</strong> By participating in the Women Impact Awards 2026, the Participant agrees to abide by and be bound by these Terms.</li>
+                      <li><strong>1.2</strong> These Terms may be modified without any prior written notification. Participant is advised to regularly review these Terms.</li>
+                      <li><strong>1.3</strong> The process and gratification for the listing thereof may be changed/modified/split/merged/increased/decreased or cancelled by the Management based on the number and quality of entries received.</li>
+                      <li><strong>1.4</strong> The management reserves the right to add or remove nominations in any category based on the quality of entries received in that category.</li>
+                      <li><strong>1.5</strong> If no Participants are found to be worthy of inclusion by the Management, the reward may be cancelled. The decision of the Management in this regard will be final and binding.</li>
+                    </ul>
+                  </div>
+
+                  {/* Section 2: Objective */}
+                  <div>
+                    <h3 className="font-bold text-lg text-[#C41E7F] mb-3">2. Objective of the Awards</h3>
+                    <p>Recognise and honour women who have made significant contributions to the social, economic, cultural, scientific, or public development of India, reflecting the country&apos;s commitment to celebrating women professionals who are leading positive change.</p>
+                  </div>
+
+                  {/* Section 3: Eligibility */}
+                  <div>
+                    <h3 className="font-bold text-lg text-[#C41E7F] mb-3">3. Eligibility Criteria</h3>
+                    <ul className="list-disc list-inside space-y-2 text-gray-600">
+                      <li><strong>3.1</strong> Woman professional/entrepreneur/artist residing in India since the past two years as on December 31, 2025 can participate.</li>
+                      <li><strong>3.2</strong> The initiative/innovation applied for the awards should be implemented between January 01, 2024 to December 31, 2025 with sustained impact falling in the last two years.</li>
+                      <li><strong>3.3</strong> Women professionals should be associated with the organisation for minimum two years as on December 31, 2025 and should produce an &apos;NOC&apos; from the organisation for participating in the awards.</li>
+                      <li><strong>3.4</strong> Women entrepreneurs participating in the awards should be associated with the organisation for minimum three years as on December 31, 2025 with minimum 30% equity in the firm.</li>
+                      <li><strong>3.5</strong> One nominee can apply for maximum two categories.</li>
+                    </ul>
+                  </div>
+
+                  {/* Section 4: Winner Selection */}
+                  <div>
+                    <h3 className="font-bold text-lg text-[#C41E7F] mb-3">4. Winner Selection Process</h3>
+                    <ul className="list-disc list-inside space-y-2 text-gray-600">
+                      <li><strong>4.1</strong> The entries that qualify based on the defined eligibility criteria shall be presented to the Jury. The decision by the Jury as confirmed by Management shall be final and binding.</li>
+                      <li><strong>4.2</strong> The shortlisted entries as well as the winning entries may be featured or covered by the Management on the Website and/or any other platform/media at the sole discretion of the Management.</li>
+                      <li><strong>4.3</strong> No correspondence of whatsoever nature relating to shortlisting of entries or selection of winning entries shall be entertained.</li>
+                    </ul>
+                  </div>
+
+                  {/* Section 5: Winner Declaration */}
+                  <div>
+                    <h3 className="font-bold text-lg text-[#C41E7F] mb-3">5. Winner Declaration</h3>
+                    <ul className="list-disc list-inside space-y-2 text-gray-600">
+                      <li><strong>5.1</strong> The management reserves the right to offer or withdraw any of the prizes/rewards/gratification as provided herein, at any point of time, including after they have been announced.</li>
+                      <li><strong>5.2</strong> The management shall have the liberty, but not the obligation, to publish information with respect to the submission/entries made by the Participants.</li>
+                      <li><strong>5.3</strong> Participants declare that the details furnished in the application form and supporting documents submitted for the listing are true, correct, and complete.</li>
+                      <li><strong>5.4</strong> The Participant authorizes the Management to use the content submitted as part of nomination/participation, in whole or in part.</li>
+                    </ul>
+                  </div>
+
+                  {/* Section 6: Prohibited Activities */}
+                  <div>
+                    <h3 className="font-bold text-lg text-[#C41E7F] mb-3">6. Prohibited Activities</h3>
+                    <ul className="list-disc list-inside space-y-2 text-gray-600">
+                      <li>Viruses, trojan horses, worms, time bombs, corrupted files, malware, spyware, or any other similar software that may damage the operation of another&apos;s computer or property</li>
+                      <li>Using the Website in any manner intended to damage, disable, overburden, or impair any server</li>
+                      <li>Attempting to gain unauthorized access to the Website, other accounts, computer systems or networks</li>
+                      <li>Obtaining or attempting to obtain any materials or information stored on the Website through any means not intentionally made available</li>
+                    </ul>
+                  </div>
+
+                  {/* Section 7: Important Dates */}
+                  <div>
+                    <h3 className="font-bold text-lg text-[#C41E7F] mb-3">7. Phases and Dates</h3>
+                    <div className="overflow-x-auto">
+                      <table className="w-full border-collapse text-sm">
+                        <thead>
+                          <tr className="bg-[#6a11cb] text-white">
+                            <th className="border border-gray-300 px-3 py-2 text-left">Event</th>
+                            <th className="border border-gray-300 px-3 py-2 text-left">Date</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr><td className="border border-gray-300 px-3 py-2">Submission Opening</td><td className="border border-gray-300 px-3 py-2">13th February, 2026</td></tr>
+                          <tr><td className="border border-gray-300 px-3 py-2">Awards Ceremony Date</td><td className="border border-gray-300 px-3 py-2">8th March, 2026</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  {/* Section 8: Limitations & Disclaimers */}
+                  <div>
+                    <h3 className="font-bold text-lg text-[#C41E7F] mb-3">8. Limitations &amp; Disclaimers</h3>
+                    <ul className="list-disc list-inside space-y-2 text-gray-600">
+                      <li><strong>8.1</strong> The Management will not be responsible for late/incomplete/corrupted/defective entries and/or which cannot be read or viewed for any reason.</li>
+                      <li><strong>8.2</strong> The Management reserve their right to suspend, cancel or modify, add to, or truncate these Terms &amp; Conditions at any time without notice.</li>
+                      <li><strong>8.3</strong> The Management gives no warranties in respect of any aspect of the listing, or any materials related thereto.</li>
+                      <li><strong>8.4</strong> The Management does not make any warranty that the listing and/or emanating results will meet Participant&apos;s expectations.</li>
+                    </ul>
+                  </div>
+
+                  {/* Section 9: General Terms */}
+                  <div>
+                    <h3 className="font-bold text-lg text-[#C41E7F] mb-3">9. General Terms</h3>
+                    <ul className="list-disc list-inside space-y-2 text-gray-600">
+                      <li><strong>9.1</strong> Participant agrees that the Participant is legally capable of entering and, if selected, participating in the listing and agree to the Terms &amp; Conditions.</li>
+                      <li><strong>9.2</strong> Participant understands and agrees that merely participating in this listing process does not entitle the Participant to a prize or to any other form of consideration.</li>
+                      <li><strong>9.3</strong> Participant shall be completely responsible for handling any infringement or alleged infringement and shall indemnify Management from any claims, costs or damages.</li>
+                      <li><strong>9.4</strong> All disputes relating to or arising out of the listing process shall be subject to the laws of India, and shall be subject to the exclusive jurisdiction of the courts of competent jurisdiction at New Delhi, India.</li>
+                    </ul>
+                  </div>
+
+                  {/* Section 10: Privacy */}
+                  <div>
+                    <h3 className="font-bold text-lg text-[#C41E7F] mb-3">10. Privacy</h3>
+                    <p>Participants voluntarily agree that personal data submitted with an entry, including name, mailing address, phone number, and email address may be collected, processed, stored, and otherwise used by the Management and its affiliates for the purposes of conducting and administering the listing process.</p>
+                  </div>
+
+                  {/* Section 11: Warranty and Indemnity */}
+                  <div>
+                    <h3 className="font-bold text-lg text-[#C41E7F] mb-3">11. Warranty and Indemnity</h3>
+                    <ul className="list-disc list-inside space-y-2 text-gray-600">
+                      <li><strong>11.1</strong> Participants warrant that their entry submission is their own original work and, as such, they are the sole and exclusive owner and rights holder of the entry submitted.</li>
+                      <li><strong>11.2</strong> To the maximum extent permitted by law, Participant indemnifies and agrees to always keep indemnified Management from and against any liability, claims, demands, losses, damages, costs and expenses resulting from any act, default, or omission of the Participant.</li>
+                    </ul>
+                  </div>
+
+                  {/* Declaration Box */}
+                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mt-6">
+                    <p className="font-semibold text-[#6B2D5B] mb-3">Declaration</p>
+                    <div className="space-y-2 text-gray-700">
+                      <p>I/We, for and on behalf of my/our organization, declare that we have read and understood the rules and regulations governing the Awards and voluntarily express our interest in participating in the Awards.</p>
+                      <p>I/We declare that all information submitted as part of our application is complete, true, and accurate. We understand that any misrepresentation/false claims may lead to disqualification at any stage of evaluation.</p>
+                      <p>I/We declare that the participating entity and its promoters/key managerial personnel are not subject to any litigations, disqualifications, or adverse orders by any court of law or regulatory authority that could impact eligibility for the Awards.</p>
+                      <p>We authorize the Awards Management/BCCL to use the content submitted as part of our entry, in whole or in part, for purposes including (but not limited to) evaluation, event communication, trade publications, press releases, electronic posting on the Awards website.</p>
+                      <p>I/We further agree that the decision of the Jury/Awards Management/BCCL shall be final and binding. I/We shall not raise any claims or initiate any action against BCCL, its affiliates, directors, management, employees, agents, or authorized representatives in relation to participation, selection, shortlisting, or winning.</p>
+                    </div>
+                  </div>
+
+                  <p className="text-xs text-gray-500 italic mt-4">
+                    Last updated: February 2026
+                  </p>
+
+                  {/* Scroll indicator */}
+                  {!hasScrolledToBottom && (
+                    <div className="sticky bottom-0 left-0 right-0 bg-gradient-to-t from-white via-white to-transparent py-4 text-center">
+                      <p className="text-[#C41E7F] font-semibold animate-pulse">
+                        ↓ Please scroll down to continue ↓
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Modal Footer */}
+                <div className="border-t border-gray-200 px-6 py-4 bg-gray-50 rounded-b-2xl">
+                  <div className="mb-4">
+                    <label className="flex items-start gap-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={modalAgreed}
+                        onChange={(e) => setModalAgreed(e.target.checked)}
+                        disabled={!hasScrolledToBottom}
+                        className="mt-1 w-5 h-5 text-[#C41E7F] border-pink-300 rounded focus:ring-[#C41E7F] disabled:opacity-50 disabled:cursor-not-allowed"
+                      />
+                      <span className={`text-sm font-medium ${
+                        hasScrolledToBottom ? 'text-gray-700' : 'text-gray-400'
+                      }`}>
+                        I have read and agree to all the terms and conditions stated above. <span className="text-red-500">*</span>
+                      </span>
+                    </label>
+                    {!hasScrolledToBottom && (
+                      <p className="text-xs text-amber-600 mt-2 ml-8">
+                        Please scroll to the bottom to enable this checkbox
+                      </p>
+                    )}
+                  </div>
+                  
+                  <div className="flex gap-3 justify-end">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowModal(false);
+                        setHasScrolledToBottom(false);
+                        setModalAgreed(false);
+                      }}
+                      className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors font-medium"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleFinalSubmit}
+                      disabled={!modalAgreed || !hasScrolledToBottom}
+                      className="px-6 py-2 bg-gradient-to-r from-[#C41E7F] to-[#D4AF37] text-white rounded-lg hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                    >
+                      Agree & Submit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Submit Button */}
           <div className="flex justify-center pt-4">
             <button
               type="submit"
-              disabled={isSubmitting || !formData.declarationAccepted}
+              disabled={isSubmitting}
               className="w-full max-w-md bg-gradient-to-r from-[#C41E7F] to-[#D4AF37] text-white font-bold py-4 px-12 rounded-full hover:shadow-lg hover:shadow-pink-500/30 transition-all hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-3 text-lg"
             >
               {isSubmitting ? (

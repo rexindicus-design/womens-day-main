@@ -61,7 +61,6 @@ function validateRequired(data: NominationData): string[] {
   if (!data.innovationDescription) errors.push('Innovation description is required');
   if (!data.outcomesAchieved) errors.push('Outcomes achieved is required');
   if (!data.executionLeadership) errors.push('Execution & leadership is required');
-  if (!data.declarationAccepted) errors.push('Declaration must be accepted');
   
   // Email validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
