@@ -456,7 +456,6 @@ function RegistrationForm() {
 
   // Track if T&C page was visited
   const [tncVisited, setTncVisited] = useState(false);
-  const [tncModalOpen, setTncModalOpen] = useState(false);
 
   // LocalStorage keys
   const FORM_DATA_KEY = "registerFormData";
@@ -1312,21 +1311,13 @@ function RegistrationForm() {
                     disabled={!tncVisited}
                   />
                   <span className="text-sm text-gray-700 font-medium">
-                    I/We agree to all the above declarations and{' '}
-                    <button
-                      type="button"
-                      className="underline text-[#C41E7F] hover:text-[#D4AF37] focus:outline-none"
-                      onClick={() => setTncModalOpen(true)}
-                    >
-                      Terms and Conditions
-                    </button>.
-                    <span className="text-red-500">*</span>
+                    I/We agree to all the above declarations and <a href="/terms-and-conditions" target="_blank" rel="noopener noreferrer" className="underline text-[#C41E7F]">Terms and Condition</a>. <span className="text-red-500">*</span>
                   </span>
                 </label>
                 {!tncVisited && (
                   <div className="mt-2 text-xs text-red-600 font-semibold flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" /></svg>
-                    It is <span className="font-bold">mandatory</span> to read the Terms and Conditions before you can agree and submit your registration.
+                    It is <span className="font-bold">mandatory</span> to visit and read the Terms and Conditions page before you can agree and submit your registration.
                   </div>
                 )}
               </div>
@@ -1488,21 +1479,4 @@ export default function RegisterPage() {
       <ScrollToTopButton />
     </div>
   );
-}
-
-// Terms Modal Component
-function TermsModal({ open, onClose, onAcknowledge }: { open: boolean; onClose: () => void; onAcknowledge: () => void }) {
-  const [tncVisited, setTncVisited] = useState(false);
-
-  useEffect(() => {
-    if (open) {
-      setTncVisited(true);
-    }
-    return () => setTncVisited(false);
-  }, [open]);
-
-  const handleAcknowledge = () => {
-    onAcknowledge();
-    setTncVisited(true);
-  };
 }
