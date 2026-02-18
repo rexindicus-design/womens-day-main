@@ -1388,100 +1388,625 @@ function RegistrationForm() {
                       <li><strong>4.3</strong> No correspondence of whatsoever nature relating to shortlisting of entries or selection of winning entries shall be entertained.</li>
                     </ul>
                   </div>
+<div>
+  <h3 className="font-bold text-lg text-[#C41E7F] mb-3">4. Categories</h3>
 
-                  {/* Section 5: Winner Declaration */}
-                  <div>
-                    <h3 className="font-bold text-lg text-[#C41E7F] mb-3">5. Winner Declaration</h3>
-                    <ul className="list-disc list-inside space-y-2 text-gray-600">
-                      <li><strong>5.1</strong> The management reserves the right to offer or withdraw any of the prizes/rewards/gratification as provided herein, at any point of time, including after they have been announced.</li>
-                      <li><strong>5.2</strong> The management shall have the liberty, but not the obligation, to publish information with respect to the submission/entries made by the Participants.</li>
-                      <li><strong>5.3</strong> Participants declare that the details furnished in the application form and supporting documents submitted for the listing are true, correct, and complete.</li>
-                      <li><strong>5.4</strong> The Participant authorizes the Management to use the content submitted as part of nomination/participation, in whole or in part.</li>
-                    </ul>
-                  </div>
+  {/* A) Professionals & Leaders */}
+  <div className="mb-6">
+    <h4 className="font-semibold text-[#C41E7F] mb-3">
+      A) Professionals & Leaders (8 categories)
+    </h4>
 
-                  {/* Section 6: Prohibited Activities */}
-                  <div>
-                    <h3 className="font-bold text-lg text-[#C41E7F] mb-3">6. Prohibited Activities</h3>
-                    <ul className="list-disc list-inside space-y-2 text-gray-600">
-                      <li>Viruses, trojan horses, worms, time bombs, corrupted files, malware, spyware, or any other similar software that may damage the operation of another&apos;s computer or property</li>
-                      <li>Using the Website in any manner intended to damage, disable, overburden, or impair any server</li>
-                      <li>Attempting to gain unauthorized access to the Website, other accounts, computer systems or networks</li>
-                      <li>Obtaining or attempting to obtain any materials or information stored on the Website through any means not intentionally made available</li>
-                    </ul>
-                  </div>
+    <ul className="list-disc list-inside space-y-3 text-gray-600">
 
-                  {/* Section 7: Important Dates */}
-                  <div>
-                    <h3 className="font-bold text-lg text-[#C41E7F] mb-3">7. Phases and Dates</h3>
-                    <div className="overflow-x-auto">
-                      <table className="w-full border-collapse text-sm">
-                        <thead>
-                          <tr className="bg-[#6a11cb] text-white">
-                            <th className="border border-gray-300 px-3 py-2 text-left">Event</th>
-                            <th className="border border-gray-300 px-3 py-2 text-left">Date</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr><td className="border border-gray-300 px-3 py-2">Submission Opening</td><td className="border border-gray-300 px-3 py-2">13th February, 2026</td></tr>
-                          <tr><td className="border border-gray-300 px-3 py-2">Awards Ceremony Date</td><td className="border border-gray-300 px-3 py-2">8th March, 2026</td></tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
+      <li>
+        <strong>1) Women in Healthcare Excellence</strong> (Clinical / Hospital / Public Health)  
+        <br />
+        <strong>Definition:</strong> Recognizes a woman leading measurable improvements in care quality, patient safety, outcomes, or access.  
+        <br />
+        <strong>Who can apply?</strong> Doctors/nurses/administrators/public health leaders in India.
+      </li>
 
-                  {/* Section 8: Limitations & Disclaimers */}
-                  <div>
-                    <h3 className="font-bold text-lg text-[#C41E7F] mb-3">8. Limitations &amp; Disclaimers</h3>
-                    <ul className="list-disc list-inside space-y-2 text-gray-600">
-                      <li><strong>8.1</strong> The Management will not be responsible for late/incomplete/corrupted/defective entries and/or which cannot be read or viewed for any reason.</li>
-                      <li><strong>8.2</strong> The Management reserve their right to suspend, cancel or modify, add to, or truncate these Terms &amp; Conditions at any time without notice.</li>
-                      <li><strong>8.3</strong> The Management gives no warranties in respect of any aspect of the listing, or any materials related thereto.</li>
-                      <li><strong>8.4</strong> The Management does not make any warranty that the listing and/or emanating results will meet Participant&apos;s expectations.</li>
-                    </ul>
-                  </div>
+      <li>
+        <strong>2) Women in MedTech / HealthTech Innovator</strong>  
+        <br />
+        <strong>Definition:</strong> Built or deployed a tech solution improving diagnosis, care delivery, hospital operations, or health access.  
+        <br />
+        <strong>Who can apply?</strong> CTO/product owner/research lead; solution piloted/deployed in India.
+      </li>
 
-                  {/* Section 9: General Terms */}
-                  <div>
-                    <h3 className="font-bold text-lg text-[#C41E7F] mb-3">9. General Terms</h3>
-                    <ul className="list-disc list-inside space-y-2 text-gray-600">
-                      <li><strong>9.1</strong> Participant agrees that the Participant is legally capable of entering and, if selected, participating in the listing and agree to the Terms &amp; Conditions.</li>
-                      <li><strong>9.2</strong> Participant understands and agrees that merely participating in this listing process does not entitle the Participant to a prize or to any other form of consideration.</li>
-                      <li><strong>9.3</strong> Participant shall be completely responsible for handling any infringement or alleged infringement and shall indemnify Management from any claims, costs or damages.</li>
-                      <li><strong>9.4</strong> All disputes relating to or arising out of the listing process shall be subject to the laws of India, and shall be subject to the exclusive jurisdiction of the courts of competent jurisdiction at New Delhi, India.</li>
-                    </ul>
-                  </div>
+      <li>
+        <strong>3) Women in STEM Research & Applied Innovation</strong>  
+        <br />
+        <strong>Definition:</strong> Researcher translating work into patents, publications, prototypes, or industry adoption.  
+        <br />
+        <strong>Who can apply?</strong> Academia/R&D labs/corporate R&D.
+      </li>
 
-                  {/* Section 10: Privacy */}
-                  <div>
-                    <h3 className="font-bold text-lg text-[#C41E7F] mb-3">10. Privacy</h3>
-                    <p>Participants voluntarily agree that personal data submitted with an entry, including name, mailing address, phone number, and email address may be collected, processed, stored, and otherwise used by the Management and its affiliates for the purposes of conducting and administering the listing process.</p>
-                  </div>
+      <li>
+        <strong>4) Women in Education Transformation</strong>  
+        <br />
+        <strong>Definition:</strong> Improved learning outcomes, employability, or access (especially for girls/underserved).  
+        <br />
+        <strong>Who can apply?</strong> School/college leaders, edtech leaders, administrators, principals.
+      </li>
 
-                  {/* Section 11: Warranty and Indemnity */}
-                  <div>
-                    <h3 className="font-bold text-lg text-[#C41E7F] mb-3">11. Warranty and Indemnity</h3>
-                    <ul className="list-disc list-inside space-y-2 text-gray-600">
-                      <li><strong>11.1</strong> Participants warrant that their entry submission is their own original work and, as such, they are the sole and exclusive owner and rights holder of the entry submitted.</li>
-                      <li><strong>11.2</strong> To the maximum extent permitted by law, Participant indemnifies and agrees to always keep indemnified Management from and against any liability, claims, demands, losses, damages, costs and expenses resulting from any act, default, or omission of the Participant.</li>
-                    </ul>
-                  </div>
+      <li>
+        <strong>5) Women in Manufacturing & Operations Excellence</strong>  
+        <br />
+        <strong>Definition:</strong> Excellence in plant leadership, quality, safety, lean, supply chain, productivity.  
+        <br />
+        <strong>Who can apply?</strong> Manufacturing/ops leaders in auto/ancillaries/textiles/electronics/chemicals etc.
+      </li>
 
-                  {/* Declaration Box */}
-                  <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 mt-6">
-                    <p className="font-semibold text-[#6B2D5B] mb-3">Declaration</p>
-                    <div className="space-y-2 text-gray-700">
-                      <p>I/We, for and on behalf of my/our organization, declare that we have read and understood the rules and regulations governing the Awards and voluntarily express our interest in participating in the Awards.</p>
-                      <p>I/We declare that all information submitted as part of our application is complete, true, and accurate. We understand that any misrepresentation/false claims may lead to disqualification at any stage of evaluation.</p>
-                      <p>I/We declare that the participating entity and its promoters/key managerial personnel are not subject to any litigations, disqualifications, or adverse orders by any court of law or regulatory authority that could impact eligibility for the Awards.</p>
-                      <p>We authorize the Awards Management/BCCL to use the content submitted as part of our entry, in whole or in part, for purposes including (but not limited to) evaluation, event communication, trade publications, press releases, electronic posting on the Awards website.</p>
-                      <p>I/We further agree that the decision of the Jury/Awards Management/BCCL shall be final and binding. I/We shall not raise any claims or initiate any action against BCCL, its affiliates, directors, management, employees, agents, or authorized representatives in relation to participation, selection, shortlisting, or winning.</p>
-                    </div>
-                  </div>
+      <li>
+        <strong>6) Women in Sustainability & Climate Action</strong>  
+        <br />
+        <strong>Definition:</strong> Measurable climate-positive outcomes (energy, water, waste, circularity, biodiversity).  
+        <br />
+        <strong>Who can apply?</strong> Corporate/NGO/entrepreneur/public sector.
+      </li>
 
-                  <p className="text-xs text-gray-500 italic mt-4">
-                    Last updated: February 2026
-                  </p>
+      <li>
+        <strong>7) Women in Tech Management (AI, Data, Cyber, Product)</strong>  
+        <br />
+        <strong>Definition:</strong> Senior tech leader delivering business impact through technology programs.  
+        <br />
+        <strong>Who can apply?</strong> IT/ITES employees, GCCs, product managers, coders, professionals in product firms in India.
+      </li>
+
+      <li>
+        <strong>8) Women Professional Innovator of the Year (Any Industry)</strong>  
+        <br />
+        <strong>Definition:</strong> Recognizes a woman professional delivering breakthrough innovation with measurable impact.  
+        <br />
+        <strong>Who can apply?</strong> Corporate professionals, leaders, engineers, consultants, teachers, clinicians, lawyers—any domain.
+      </li>
+
+    </ul>
+  </div>
+
+  {/* B) Entrepreneurs & MSMEs */}
+  <div className="mb-6">
+    <h4 className="font-semibold text-[#C41E7F] mb-3">
+      B) Entrepreneurs & MSMEs (4 categories)
+    </h4>
+
+    <ul className="list-disc list-inside space-y-3 text-gray-600">
+
+      <li>
+        <strong>9) Women Entrepreneur of the Year</strong>  
+        <br />
+        <strong>Definition:</strong> Woman founder scaling business with strong revenue, sustainable operations, and job creation.  
+        <br />
+        <strong>Who can apply?</strong> Founder/co-founder operating 3+ years, revenue more than 500cr as on March 31, 2025.
+      </li>
+
+      <li>
+        <strong>10) Women-led MSME Champion</strong>  
+        <br />
+        <strong>Definition:</strong> Celebrates MSME leadership demonstrating modernization, resilience, and employment impact.  
+        <br />
+        <strong>Who can apply?</strong> MSME owner operating 3+ years with upto 500cr revenue and valid MSME/Udhyam registration.
+      </li>
+
+      <li>
+        <strong>11) Women Founder in DeepTech / IP-led Innovation</strong>  
+        <br />
+        <strong>Definition:</strong> Founder building defensible innovation with commercialization potential.  
+        <br />
+        <strong>Who can apply?</strong> Startups with minimum 100cr revenue, less than 10 years incorporation, valid DPIIT certificate.
+      </li>
+
+      <li>
+        <strong>12) Grassroots Woman Social Changemaker</strong>  
+        <br />
+        <strong>Definition:</strong> Grassroots leader creating proven community outcomes.  
+        <br />
+        <strong>Who can apply?</strong> NGO leaders, SHG leaders, frontline leaders in India.
+      </li>
+
+    </ul>
+  </div>
+
+  {/* C) Arts, Culture & Entertainment */}
+  <div>
+    <h4 className="font-semibold text-[#C41E7F] mb-3">
+      C) Arts, Culture & Entertainment (Celebrity-friendly)
+    </h4>
+
+    <ul className="list-disc list-inside space-y-3 text-gray-600">
+
+      <li>
+        <strong>13) Rising Star – Indian Cinema/OTT (Under 35)</strong>  
+        <br />
+        <strong>Definition:</strong> Recognizes breakthrough talent with standout work in last 12–24 months.  
+        <br />
+        <strong>Who can apply?</strong> Under 35 with at least one major credited work.
+      </li>
+
+      <li>
+        <strong>14) Excellence in Music (Carnatic / Indie / Film)</strong>  
+        <br />
+        <strong>Definition:</strong> Honors a musician with strong artistic contribution.  
+        <br />
+        <strong>Who can apply?</strong> Minimum 5 years experience and notable work in last 24 months.
+      </li>
+
+      <li>
+        <strong>15) Excellence in Dance & Performing Arts</strong>  
+        <br />
+        <strong>Definition:</strong> Performer/choreographer contributing to cultural continuity.  
+        <br />
+        <strong>Who can apply?</strong> Minimum 5 years of active practice with significant public showcases.
+      </li>
+
+    </ul>
+  </div>
+</div>
+
+                {/* Section 3: Winner Selection Process */}
+<div>
+  <h3 className="font-bold text-lg text-[#C41E7F] mb-3">
+    3. Winner Selection Process
+  </h3>
+
+  <ul className="list-disc list-inside space-y-2 text-gray-600">
+    <li>
+      <strong>3.1</strong> The entries that qualify based on the defined eligibility criteria shall be presented to the Jury. The decision by the Jury as confirmed by Management shall be final and binding.
+    </li>
+
+    <li>
+      <strong>3.2</strong> The shortlisted entries as well as the winning entries may be featured or covered by the Management or brief thereof may be featured on the Website and/or any other platform/media at the sole discretion of the Management.
+    </li>
+
+    <li>
+      <strong>3.3</strong> No correspondence of whatsoever nature relating to shortlisting of entries or selection of winning entries shall be entertained.
+    </li>
+
+    <li>
+      <strong>3.4</strong> Management shall screen or display the entries for the Jury.
+    </li>
+
+    <li>
+      <strong>3.5</strong> The Jury shall select the top finalist along with the winners.
+    </li>
+  </ul>
+</div>
+{/* Section 4: Winner Declaration */}
+<div>
+  <h3 className="font-bold text-lg text-[#C41E7F] mb-3">
+    4. Winner Declaration
+  </h3>
+
+  <ul className="list-disc list-inside space-y-2 text-gray-600">
+
+    <li>
+      <strong>4.1</strong> The management reserves the right to offer or withdraw any of the prizes/rewards/gratification as provided herein, at any point of time, including after they have been announced.
+    </li>
+
+    <li>
+      <strong>4.2</strong> The management shall have the liberty, but not the obligation, to publish information with respect to the submission/entries made by the Participants.
+    </li>
+
+    <li>
+      <strong>4.3</strong> Participants declare that the details furnished in the application form and supporting documents submitted for the listing are true, correct, and complete and provided after due diligence. Any false or misleading information may result in consequences including indemnifying the Management.
+    </li>
+
+    <li>
+      <strong>4.4</strong> The Participant authorizes the Management to use the content submitted as part of nomination/participation, in whole or in part, including trade publications, press releases, social media posting, electronic hyperlinks, or any display format selected by the Management.
+    </li>
+
+    <li>
+      <strong>4.5</strong> The management may exclude a Participant from the listing process on grounds including unfitness to participate, inability to provide documentation, or any reason adversely impacting the listing.
+    </li>
+
+    <li>
+      <strong>4.6</strong> The Management is not responsible if a call to a winner is unsuccessful due to:
+      <ul className="list-[lower-alpha] ml-6 mt-2 space-y-1">
+        <li>Line being busy</li>
+        <li>Congestion</li>
+        <li>No answer received</li>
+        <li>Poor call conditions / unclear reception</li>
+        <li>Number engaged</li>
+        <li>Call drop</li>
+        <li>E-mail not delivered</li>
+        <li>Other reasons rendering the call unsuccessful</li>
+      </ul>
+    </li>
+
+    <li>
+      <strong>4.7</strong> The Management reserves the right to replace any winner who fails, is disqualified, or breaches Terms with another eligible Participant.
+    </li>
+
+    <li>
+      <strong>4.8</strong> The Management will attempt to contact winners within 30 days and may make up to three attempts. Failure may result in forfeiture of the prize.
+    </li>
+
+    <li>
+      <strong>4.9</strong> Winners will be identified using the registered email. Failure to provide identification proof may result in disqualification.
+    </li>
+
+    <li>
+      <strong>4.10</strong> The Management will make reasonable efforts to enable participation and contact winners but cannot guarantee successful communication.
+    </li>
+
+    <li>
+      <strong>4.11</strong> The Management has no liability if a Participant cannot participate and may disqualify Participants at its discretion.
+    </li>
+
+    <li>
+      <strong>4.12</strong> The Management may replace disqualified winners with another eligible Participant, even if previously eliminated.
+    </li>
+
+    <li>
+      <strong>4.13</strong> If any person tampers with the Website or listing process data, the Management may revoke winnings and initiate legal action.
+    </li>
+
+    <li>
+      <strong>4.14</strong> The Management will coordinate prize delivery and is not responsible if winners refuse the prize.
+    </li>
+
+    <li>
+      <strong>4.15</strong> Winners will receive prize communication via registered email. Unclaimed prizes within 30 days will be forfeited.
+    </li>
+
+    <li>
+      <strong>4.16</strong> Winners must submit attested copies of valid Government-issued photo ID and required documents.
+    </li>
+
+    <li>
+      <strong>4.17</strong> Prize delivery may be delayed due to document submission delays or force majeure events.
+    </li>
+
+    <li>
+      <strong>4.18</strong> Winners agree not to hold the Management responsible for delays or disputes related to prizes.
+    </li>
+
+    <li>
+      <strong>4.19</strong> Any disputes related to prizes shall be addressed directly to the Management.
+    </li>
+
+    <li>
+      <strong>4.20</strong> The Management may refuse prizes in case of fraud, dishonesty, or non-entitlement.
+    </li>
+
+  </ul>
+</div>
+
+{/* Section 5: Prohibited Activities */}
+<div>
+  <h3 className="font-bold text-lg text-[#C41E7F] mb-3">
+    5. Prohibited Activities
+  </h3>
+
+  <ul className="list-disc list-inside space-y-2 text-gray-600">
+    <li>
+      <strong>5.1</strong> Viruses, trojan horses, worms, time bombs, corrupted files, malware, spyware, or any other similar software that may damage the operation of another’s computer or property.
+    </li>
+
+    <li>
+      <strong>5.2</strong> Using the Website in any manner intended to damage, disable, overburden, or impair any server, or the network(s) connected to any server, or interfere with any other party’s use and enjoyment of the Website.
+    </li>
+
+    <li>
+      <strong>5.3</strong> Attempting to gain unauthorized access to the Website, other accounts, computer systems or networks connected to any server through hacking, password mining or any other means.
+    </li>
+
+    <li>
+      <strong>5.4</strong> Obtaining or attempting to obtain any materials or information stored on the Website, its servers, or associated computers through any means not intentionally made available through the Website.
+    </li>
+  </ul>
+</div>
+
+
+{/* Section 6: Phases and Dates */}
+<div className="mt-6">
+  <h3 className="font-bold text-lg text-[#C41E7F] mb-3">
+    6. Phases and Dates
+  </h3>
+
+  {/* Table */}
+  <div className="overflow-x-auto mb-4">
+    <table className="w-full border border-gray-300 text-gray-600">
+      <thead>
+        <tr className="bg-gray-100">
+          <th className="border p-2 text-left">Event</th>
+          <th className="border p-2 text-left">Date</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td className="border p-2">Submission Opening</td>
+          <td className="border p-2">
+            13<sup>th</sup> February, 2026
+          </td>
+        </tr>
+
+        <tr>
+          <td className="border p-2">Awards ceremony date</td>
+          <td className="border p-2">
+            8<sup>th</sup> March, 2026
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ul className="list-disc list-inside space-y-2 text-gray-600">
+    <li>
+      <strong>6.1</strong> The schedule may be modified, extended, cancelled, or terminated based on technical requirements at the sole discretion of Management.
+    </li>
+
+    <li>
+      <strong>6.2</strong> All applications will be evaluated based on pre-defined criteria determined by Management in its sole discretion.
+    </li>
+
+    <li>
+      <strong>6.3</strong> The decision of Management based on Jury recommendations regarding evaluation, disqualification, or qualification is final and binding.
+    </li>
+  </ul>
+</div>
+
+
+{/* Section 7: Limitations & Disclaimers */}
+<div className="mt-6">
+  <h3 className="font-bold text-lg text-[#C41E7F] mb-3">
+    7. Limitations & Disclaimers
+  </h3>
+
+  <ul className="list-disc list-inside space-y-2 text-gray-600">
+    <li>
+      <strong>7.1</strong> Management is not responsible for late, incomplete, corrupted, defective, or unreadable entries and such entries will be disqualified.
+    </li>
+
+    <li>
+      <strong>7.2</strong> Management reserves the right to suspend, cancel, or modify Terms & Conditions or listing rules at any time without notice.
+    </li>
+
+    <li>
+      <strong>7.3</strong> The listing is provided on an “as-is” basis and Management disclaims all implied warranties including fitness, accuracy, timeliness, and merchantability.
+    </li>
+
+    <li>
+      <strong>7.4</strong> Management does not guarantee that listing results will meet Participant expectations.
+    </li>
+  </ul>
+</div>
+
+{/* Section 8: General */}
+<div className="mt-6">
+  <h3 className="font-bold text-lg text-[#C41E7F] mb-3">
+    8. General
+  </h3>
+
+  <ul className="list-disc list-inside space-y-2 text-gray-600">
+
+    <li>
+      <strong>8.1</strong> Participant agrees that the Participant is legally capable of entering and, if selected, participating in the listing and agrees to the Terms & Conditions.
+    </li>
+
+    <li>
+      <strong>8.2</strong> Participant understands that merely participating in this listing process does not entitle the Participant to a prize or any other consideration.
+    </li>
+
+    <li>
+      <strong>8.3</strong> Participant shall be responsible for handling any infringement or alleged infringement and shall indemnify Management from claims, costs, or damages arising from infringement.
+    </li>
+
+    <li>
+      <strong>8.4</strong> Participants grant the Management a royalty-free, irrevocable, worldwide, non-exclusive license to use and display entries and related intellectual property for listing purposes.
+    </li>
+
+    <li>
+      <strong>8.5</strong> Management reserves the right to withdraw or amend Terms & Conditions at any time and is not responsible for losses due to participation or rule changes.
+    </li>
+
+    <li>
+      <strong>8.6</strong> Participants wishing to withdraw must inform Management in writing at least one week prior to the final ceremony.
+    </li>
+
+    <li>
+      <strong>8.7</strong> All disputes shall be governed by the laws of India and subject to jurisdiction of courts at New Delhi, India.
+    </li>
+
+    <li>
+      <strong>8.8</strong> Issues not covered in these Terms shall be decided by Management or an appointed legal body.
+    </li>
+
+  </ul>
+</div>
+
+
+{/* Section 9: Website */}
+<div className="mt-6">
+  <h3 className="font-bold text-lg text-[#C41E7F] mb-3">
+    9. Website
+  </h3>
+
+  <ul className="list-disc list-inside space-y-2 text-gray-600">
+
+    <li>
+      <strong>9.1</strong> The Website is informational only. Management is not liable for actions taken based on Website content or listing participation.
+    </li>
+
+    <li>
+      <strong>9.2</strong> The Management shall not be responsible for:
+      <ul className="list-[lower-alpha] ml-6 mt-2 space-y-1">
+        <li>Delivery failures relating to registration or uploading presentations.</li>
+        <li>SPAM generated messages from accessing the Website.</li>
+        <li>Management not receiving or rejecting data.</li>
+        <li>Lost, late, or misdirected transmissions or technical failures.</li>
+        <li>Other conditions beyond its control.</li>
+      </ul>
+    </li>
+
+  </ul>
+</div>
+
+
+{/* Section 10: Disclaimers */}
+<div className="mt-6">
+  <h3 className="font-bold text-lg text-[#C41E7F] mb-3">
+    10. Disclaimers
+  </h3>
+
+  <ul className="list-disc list-inside space-y-2 text-gray-600">
+
+    <li>
+      <strong>10.1</strong> Management is not responsible for monitoring entries or preventing violations of intellectual property rights but may investigate and eliminate non-conforming entries.
+    </li>
+
+    <li>
+      <strong>10.2</strong> Failure to exercise any right does not constitute waiver. Management is not liable for failure to perform obligations due to circumstances beyond control.
+    </li>
+
+    <li>
+      <strong>10.3</strong> This Agreement represents the complete understanding between parties and supersedes prior agreements.
+    </li>
+
+    <li>
+      <strong>10.4</strong> No agency, partnership, joint venture, or employment relationship is created under this Agreement.
+    </li>
+
+    <li>
+      <strong>10.5</strong> Participant agrees not to hold Management or its affiliates liable for losses or claims arising from participation or prizes.
+    </li>
+
+  </ul>
+</div>
+{/* Section 11: Systems and Availability */}
+<div className="mt-6">
+  <h3 className="font-bold text-lg text-[#C41E7F] mb-3">
+    11. Systems and Availability
+  </h3>
+
+  <ul className="list-disc list-inside space-y-2 text-gray-600">
+
+    <li>
+      <strong>11.1</strong> The Management, its affiliates, advisors, contractors, partners, and promotion agencies are not responsible for technical, hardware, software, or communication failures, lost network connections, website availability issues, unauthorized intervention, or transmission errors that may limit participation. Management is not responsible for lost, late, incomplete, invalid, or corrupted submissions. While reasonable efforts will be made to ensure data security and accuracy, such methods are not guaranteed to be infallible.
+    </li>
+
+    <li>
+      <strong>11.2</strong> Any loss, outage, or dissatisfaction suffered by a Participant during the process shall not be the responsibility of Management or its affiliates.
+    </li>
+
+    <li>
+      <strong>11.3</strong> Management will attempt to protect data from loss or corruption, but in case of data loss, it may proceed with available data or take reasonable actions as deemed appropriate. Management shall not be held responsible for such loss.
+    </li>
+
+    <li>
+      <strong>11.4</strong> Participants must ensure that the Website is operational before starting the application process and maintain adequate RAM and device memory for smooth functioning.
+    </li>
+
+    <li>
+      <strong>11.5</strong> The server includes redundancies; however, if the server is down during the entry period, Management may determine appropriate measures at its discretion.
+    </li>
+
+    <li>
+      <strong>11.6</strong> Participants acknowledge that all potential technical issues may not be identified and agree to hold Management harmless for any failures, losses, or inconvenience caused.
+    </li>
+
+    <li>
+      <strong>11.7</strong> Participants shall not initiate litigation against Management or its partners. Any grievance must be submitted through the Website, and Management’s decision shall be final.
+    </li>
+
+    <li>
+      <strong>11.8</strong> The Management shall not be liable for any failure of the application server or system during the listing process.
+    </li>
+
+  </ul>
+</div>
+{/* Section 12: Publicity */}
+<div className="mt-6">
+  <h3 className="font-bold text-lg text-[#C41E7F] mb-3">
+    12. Publicity
+  </h3>
+
+  <ul className="list-disc list-inside space-y-2 text-gray-600">
+
+    <li>
+      <strong>12.1</strong> The Participant, by providing sensitive personal information, voluntarily agrees that Management may share such information with third parties for the purpose of the listing. Participants shall not file any claim against Management for sharing such information. All information will be handled in accordance with the Management’s privacy policy.
+    </li>
+
+    <li>
+      <strong>12.2</strong> By entering the listing, Participants agree to participate in media or promotional activities as reasonably requested by Management and consent to the use of their name and/or likeness.
+    </li>
+
+    <li>
+      <strong>12.3</strong> Management will contact Participants in advance regarding media interviews. Entries may be used for promotional, marketing, press, or media purposes. Participants waive any intellectual property rights in submitted entries and agree that no payment will be made for use of their name, likeness, or submissions.
+    </li>
+
+    <li>
+      <strong>12.4</strong> Participants shall not speak to the press, media, or any third party regarding the listing without prior written approval from Management. Violation may result in disqualification.
+    </li>
+
+    <li>
+      <strong>12.5</strong> Participants shall maintain confidentiality of all details related to the listing.
+    </li>
+
+    <li>
+      <strong>12.6</strong> Any photographs, videos, or materials submitted by Participants become the property of Management and may be used worldwide in perpetuity. Participants must ensure submitted content does not violate laws, rights, or public standards.
+    </li>
+
+    <li>
+      <strong>12.7</strong> Acceptance of these Terms grants permission to Management and its affiliates to record and use Participant’s name, likeness, voice, and comments for advertising or promotional purposes worldwide without compensation.
+    </li>
+
+  </ul>
+</div>
+
+{/* Section 13: Privacy */}
+<div className="mt-6">
+  <h3 className="font-bold text-lg text-[#C41E7F] mb-3">
+    13. Privacy
+  </h3>
+
+  <ul className="list-disc list-inside space-y-2 text-gray-600">
+    <li>
+      <strong>13.1</strong> Participants voluntarily agree that personal data submitted with an entry, including name, mailing address, phone number, and email address may be collected, processed, stored, and used by Management and its affiliates for administering the listing process. By entering the listing, Participants agree to the transmission, processing, disclosure, and storage of such personal data. All personal information collected is subject to the applicable Privacy Policy of Management.
+    </li>
+  </ul>
+</div>
+
+
+{/* Section 14: Warranty and Indemnity */}
+<div className="mt-6">
+  <h3 className="font-bold text-lg text-[#C41E7F] mb-3">
+    14. Warranty and Indemnity
+  </h3>
+
+  <ul className="list-disc list-inside space-y-2 text-gray-600">
+
+    <li>
+      <strong>14.1</strong> Participants warrant that their submission is original work and that they are the sole owner with rights to submit the entry and grant necessary licenses. Participants agree not to submit entries that infringe third-party intellectual property, proprietary rights, privacy rights, or violate applicable laws.
+    </li>
+
+    <li>
+      <strong>14.2</strong> Participants agree to indemnify and hold Management harmless from any liability, claims, losses, damages, or expenses arising from breach of Terms, infringement, misrepresentation, participation in the listing, use of prizes, website malfunction, or errors related to the listing process.
+    </li>
+
+  </ul>
+</div>
+
+
+{/* Back to Registration Button */}
+<div className="mt-8">
+  <a
+    href="/register"
+    className="inline-block px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition"
+  >
+    ← Back to Registration
+  </a>
+</div>
+
+
+{/* Footer */}
+<footer className="mt-10 py-6 text-center text-gray-500 border-t">
+  <p>© 2026 SIMATS EmpowerHER Awards | All Rights Reserved</p>
+</footer>
+
 
                   {/* Scroll indicator */}
                   {!hasScrolledToBottom && (
