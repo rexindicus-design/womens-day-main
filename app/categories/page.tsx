@@ -157,16 +157,13 @@ function DualLogo() {
         </div>
       </div>
       <div className="h-8 sm:h-10 w-px bg-gray-300"></div>
+        {/* TOI Logo */}
       <div className="flex items-center gap-2">
         <img 
-          src="/toi.png" 
+          src="/TOI1.png" 
           alt="Times of India" 
-          className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+          className="w-16 h-20 sm:w-40 sm:h-20 object-contain"
         />
-        <div className="hidden sm:block">
-          <div className="text-[#E31837] font-bold text-sm leading-tight">Times of India</div>
-          <div className="text-gray-500 text-xs">Since 1838</div>
-        </div>
       </div>
     </a>
   );
@@ -415,16 +412,9 @@ function PartnershipBanner() {
               <div className="text-gray-500 text-sm">Excellence in Education</div>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <img 
-              src="/toi.png" 
-              alt="Times of India" 
-              className="w-12 h-12 sm:w-16 sm:h-16 object-contain"
-            />
-            <div className="hidden sm:block">
-              <div className="text-[#E31837] font-bold">Times of India</div>
-              <div className="text-gray-500 text-sm">India&apos;s Leading Daily</div>
-            </div>
+          {/* TOI Logo */}
+          <div className="flex items-center gap-2">
+            <img src="/TOI1.png" alt="Times of India" className="w-16 h-20 sm:w-40 sm:h-20 object-contain" />
           </div>
         </div>
       </div>

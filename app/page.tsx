@@ -33,7 +33,7 @@ const newsTickerItems = [
   "🏆 Nominations Open: Women's Day Achievement Awards 2026",
   "📅 Event Date: March 8, 2026 at SIMATS Campus",
   "🎓 SIMATS (Saveetha Institute of Medical and Technical Sciences) celebrates 25 years of excellence",
-  "📰 Times of India - India's leading English daily partners for Awards",
+  "📰 The Times of India - India's leading English daily partners for Awards",
   "🌟 Special Lifetime Achievement Award announced",
   "📅 The last date for nomination is 23rd February 2026",
 ];
@@ -102,15 +102,11 @@ function DualLogo() {
       {/* TOI Logo */}
       <div className="flex items-center gap-2">
         <img 
-          src="/toi.png" 
+          src="/TOI1.png" 
           alt="Times of India" 
-          className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+          className="w-16 h-16 sm:w-35 sm:h-20 object-contain"
         />
-        <div className="hidden sm:block">
-          <div className="text-[#E31837] font-bold text-sm leading-tight">Times of India</div>
-          <div className="text-gray-500 text-xs">Since 1838</div>
-        </div>
-      </div>
+             </div>
     </a>
   );
 }
@@ -225,7 +221,7 @@ function AnnouncementBox() {
       </h2>
         {/* Main headline */}
       <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#C41E7F] mb-5 sm:mb-8 leading-tight font-bold">
-        Times of India 
+        The Times of India 
       </h2>
          {/* Main headline */}
       <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl text-[#C41E7F] mb-1 sm:mb-2 leading-tight font-bold">
@@ -235,7 +231,7 @@ function AnnouncementBox() {
       {/* Body text */}
       <div className="font-serif text-base sm:text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto space-y-4 mb-8">
         <p className="text-xl text-[#C41E7F] font-medium">
-          The SIMATS EmpowHer Awards serve as a prestigious platform to recognize formidable and unstoppable womens leaders,emboding a multi faceted brillance, blending empathetic leadership with unwavering intelligence rigor to redefine success, lighting the path for aspirant generations.
+          The SIMATS EmpowHer Awards serve as a prestigious platform to recognize formidable and unstoppable women leaders,emboding a multi faceted brillance, blending empathetic leadership with unwavering intelligence rigor to redefine success, lighting the path for aspirant generations.
         </p>
        
       </div>
@@ -281,7 +277,7 @@ function NominationInfoSection() {
               <CheckItem>Amplifies visibility and credibility</CheckItem>
               <CheckItem>Inspires the next generation of women leaders</CheckItem>
                <CheckItem>Drives gender equity & social change</CheckItem>
-              <CheckItem>National media coverage through Times of India</CheckItem>
+              <CheckItem>Get recognised by a prominent dignitary</CheckItem>
             </div>
           </div>
 
@@ -291,12 +287,11 @@ function NominationInfoSection() {
               What Judges Look For
             </h2>
             <div className="space-y-4">
-              <CheckItem>Outstanding achievements till date</CheckItem>
+              <CheckItem>Outstanding achievements </CheckItem>
               <CheckItem>Leadership and Mentorship</CheckItem>
               <CheckItem>Commitment to diversity and inclusion</CheckItem>
               <CheckItem>Innovation and Creativity</CheckItem>
-               <CheckItem>Future Potential and vision</CheckItem>
-              <CheckItem>Impact on community and society at large</CheckItem>
+               <CheckItem>Impact on community and society at large</CheckItem>
             </div>
           </div>
         </div>
@@ -327,7 +322,7 @@ function HowToNominateSection() {
               How to Nominate
             </h2>
             <p className="text-white/90 mb-6">
-              Submit the nomination for yourself or someone you believe is a strong fit for the Award. Nomination can be submitted in multiple categories, if appropiate.
+              “You can nominate only yourself for the Award. Self-nomination is allowed in up to two categories, if appropriate. Nominating others is not allowed.”
             </p>
             <p className="text-white/90 mb-6">
               The Last of nomination is 23rd February 2026.
@@ -370,8 +365,8 @@ function HowToNominateSection() {
               Terms & Conditions
             </h6>
               <p className="text-white/90 text-sm">
-                It is essential that both nominee and nominator are aware of the terms & conditions of the 
-                nomination and that both parties are aware that the submission has been made.
+                “This nomination process is strictly for self-nomination; therefore, the nominee must review and 
+                accept the terms and conditions and confirm the submission.”
               </p>
             </div>
           </div>
@@ -398,6 +393,10 @@ function NominationForm() {
     biography: "",
     futureVision: "",
     recommendation: "",
+    yearsExperience: "",
+    yearsDesignation: "",
+    yearIncorporation: "",
+    revenue: "",
     termsAccepted: false,
   });
 
@@ -413,16 +412,25 @@ function NominationForm() {
     }));
   };
 
+  const [errors, setErrors] = useState<string[]>([]);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const validationErrors: string[] = [];
+    if (!formData.yearsExperience) validationErrors.push("Years of experience in current organisation is required");
+    if (!formData.yearsDesignation) validationErrors.push("Years at same designation is required");
+    if (!formData.yearIncorporation) validationErrors.push("Year of Incorporation is required");
+    if (!formData.revenue) validationErrors.push("Revenue as on March 31, 2025 is required");
+    // Add any other required field checks here as needed
+    if (validationErrors.length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
     setIsSubmitting(true);
-    
+    setErrors([]);
     // Simulate form submission
     await new Promise(resolve => setTimeout(resolve, 2000));
-    
     setIsSubmitting(false);
     setSubmitSuccess(true);
-    
     // Reset form after success
     setTimeout(() => {
       setSubmitSuccess(false);
@@ -441,6 +449,10 @@ function NominationForm() {
         biography: "",
         futureVision: "",
         recommendation: "",
+        yearsExperience: "",
+        yearsDesignation: "",
+        yearIncorporation: "",
+        revenue: "",
         termsAccepted: false,
       });
     }, 3000);
@@ -552,7 +564,7 @@ function NominationForm() {
             </h3>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Nominee&apos;s Full Name *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Nominee&apos;s Full Name <span className="text-red-500">*</span></label>
                 <input
                   type="text"
                   name="nomineeName"
@@ -564,7 +576,7 @@ function NominationForm() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Nominee&apos;s Email *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Nominee&apos;s Email <span className="text-red-500">*</span></label>
                 <input
                   type="email"
                   name="nomineeEmail"
@@ -587,7 +599,7 @@ function NominationForm() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Designation *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Designation <span className="text-red-500">*</span></label>
                 <input
                   type="text"
                   name="nomineeDesignation"
@@ -599,7 +611,7 @@ function NominationForm() {
                 />
               </div>
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Organization *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Organization <span className="text-red-500">*</span></label>
                 <input
                   type="text"
                   name="nomineeOrganization"
@@ -608,6 +620,58 @@ function NominationForm() {
                   required
                   className="w-full px-4 py-3 border border-pink-200 rounded-xl focus:ring-2 focus:ring-[#C41E7F] focus:border-transparent transition-all"
                   placeholder="Nominee's organization"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Years of experience in current organisation</label>
+                <input
+                  type="number"
+                  name="yearsExperience"
+                  value={formData.yearsExperience}
+                  onChange={handleInputChange}
+                  required
+                  min="0"
+                  className="w-full px-4 py-3 border border-pink-200 rounded-xl focus:ring-2 focus:ring-[#C41E7F] focus:border-transparent transition-all"
+                  placeholder="e.g., 5"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Years at same designation</label>
+                <input
+                  type="number"
+                  name="yearsDesignation"
+                  value={formData.yearsDesignation}
+                  onChange={handleInputChange}
+                  required
+                  min="0"
+                  className="w-full px-4 py-3 border border-pink-200 rounded-xl focus:ring-2 focus:ring-[#C41E7F] focus:border-transparent transition-all"
+                  placeholder="e.g., 3"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Year of Incorporation</label>
+                <input
+                  type="number"
+                  name="yearIncorporation"
+                  value={formData.yearIncorporation}
+                  onChange={handleInputChange}
+                  required
+                  min="1900"
+                  max="2026"
+                  className="w-full px-4 py-3 border border-pink-200 rounded-xl focus:ring-2 focus:ring-[#C41E7F] focus:border-transparent transition-all"
+                  placeholder="e.g., 2015"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Revenue as on March 31, 2025</label>
+                <input
+                  type="text"
+                  name="revenue"
+                  value={formData.revenue}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-4 py-3 border border-pink-200 rounded-xl focus:ring-2 focus:ring-[#C41E7F] focus:border-transparent transition-all"
+                  placeholder="e.g., ₹10 Crores"
                 />
               </div>
             </div>
@@ -827,38 +891,32 @@ function PartnershipBanner() {
               <div className="text-gray-500 text-sm">Excellence in Education</div>
             </div>
           </div>
-          
-          {/* TOI Logo */}
-          <div className="flex items-center gap-3">
-            <img 
-              src="/toi.png" 
-              alt="Times of India" 
-              className="w-12 h-12 sm:w-16 sm:h-16 object-contain"
-            />
-            <div className="hidden sm:block">
-              <div className="text-[#E31837] font-bold">Times of India</div>
-              <div className="text-gray-500 text-sm">India&apos;s Leading Daily</div>
-            </div>
-          </div>
+          {/* Divider */}
+      <div className="h-8 sm:h-10 w-px bg-gray-300"></div>
+      
+      {/* TOI Logo */}
+      <div className="flex items-center gap-2">
+        <img 
+          src="/TOI1.png" 
+          alt="Times of India" 
+          className="w-16 h-20 sm:w-40 sm:h-20 object-contain"
+        />
+             </div>
+            
         </div>
         
         {/* Knowledge Partner Section */}
         <div className="text-center mt-8 mb-4">
-          <p className="text-[#6B2D5B] text-sm uppercase tracking-wider font-medium">Audit Partner</p>
+          <p className="text-[#6B2D5B] text-sm uppercase tracking-wider font-medium">Process framework set and evaluated</p>
         </div>
         <div className="flex items-center justify-center">
           {/* EY Logo */}
-          <div className="flex items-center gap-3">
-            <img 
-              src="/ey.png" 
-              alt="EY" 
-              className="w-12 h-12 sm:w-16 sm:h-16 object-contain"
-            />
-            <div className="hidden sm:block">
-              <div className="text-[#FFE600] font-bold">EY</div>
-              <div className="text-gray-500 text-sm">Building a better working world</div>
+          
+            <div className="hidden sm:block text-center w-full">
+              <div className="font-bold">by</div>
+              <div className="font-text-2xl">Ernst & Young</div>
             </div>
-          </div>
+          
         </div>
       </div>
     </section>
@@ -914,7 +972,7 @@ function Footer() {
             <p className="text-white/70 text-sm">
               The Women&apos;s Day Achievement Awards celebrate extraordinary women who are making 
               a difference in Technology, Research, and Social Impact. A prestigious collaboration 
-              between SIMATS (Saveetha Institute of Medical and Technical Sciences)  and Times of India.
+              between SIMATS (Saveetha Institute of Medical and Technical Sciences)  and TheTimes of India.
             </p>
           </div>
           
@@ -947,7 +1005,7 @@ function Footer() {
         </div>
         
         <div className="mt-12 pt-8 border-t border-white/20 text-center text-sm text-white/50">
-          <p>&copy; {new Date().getFullYear()} Women&apos;s Day Achievement Awards. SIMATS (Saveetha Institute of Medical and Technical Sciences)  & Times of India. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Women&apos;s Day Achievement Awards. SIMATS (Saveetha Institute of Medical and Technical Sciences)  & The Times of India. All rights reserved.</p>
         </div>
       </div>
     </footer>

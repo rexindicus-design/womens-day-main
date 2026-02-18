@@ -43,8 +43,7 @@ const awardCategories = [
   "Excellence in Music (Carnatic / Film)",
   "Excellence in Dance & Performing Arts(Bharatanatyam / Folk / Theatre)",
   "SIMATS Life Time Achievement Award",
-  "Others",
-];
+  ];
 
 // Sector/Industry options
 const sectorOptions = [
@@ -222,16 +221,13 @@ function DualLogo() {
         </div>
       </div>
       <div className="h-8 sm:h-10 w-px bg-gray-300"></div>
+       {/* TOI Logo */}
       <div className="flex items-center gap-2">
         <img 
-          src="/toi.png" 
+          src="/TOI1.png" 
           alt="Times of India" 
-          className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+          className="w-16 h-20 sm:w-40 sm:h-20 object-contain"
         />
-        <div className="hidden sm:block">
-          <div className="text-[#E31837] font-bold text-sm leading-tight">Times of India</div>
-          <div className="text-gray-500 text-xs">Since 1838</div>
-        </div>
       </div>
     </a>
   );
@@ -373,7 +369,10 @@ function AttachmentField({
 }) {
   return (
     <div className="border border-pink-100 rounded-xl p-4 bg-pink-50/30">
-      <div className="font-medium text-[#6B2D5B] mb-3">Attachment {index + 1}</div>
+      <div className="font-medium text-[#6B2D5B] mb-3">
+        Attachment {index + 1}
+        {index === 0 && <span className="text-red-500 ml-1">*</span>}
+      </div>
       <div className="grid md:grid-cols-3 gap-4">
         <div>
           <label className="block text-sm text-gray-600 mb-1">a) Name of document</label>
@@ -457,6 +456,7 @@ function RegistrationForm() {
 
   // Track if T&C page was visited
   const [tncVisited, setTncVisited] = useState(false);
+  const [tncModalOpen, setTncModalOpen] = useState(false);
 
   // LocalStorage keys
   const FORM_DATA_KEY = "registerFormData";
@@ -667,12 +667,12 @@ function RegistrationForm() {
     const allowedExtensions = ['.pdf', '.jpg', '.jpeg', '.png'];
     let totalFileSize = 0;
 
-    let atLeastOneAttachment = false;
+    // Attachment 1 (index 0) is mandatory
+    const attachment1 = attachments[0];
+    if (!(attachment1.file || (attachment1.link && attachment1.link.trim() !== ""))) {
+      validationErrors.push("Attachment 1 (Supporting Document) is mandatory.");
+    }
     attachments.forEach((attachment, index) => {
-      // Require at least one of file or link for each attachment
-      if (attachment.file || (attachment.link && attachment.link.trim() !== "")) {
-        atLeastOneAttachment = true;
-      }
       // If file is present, validate type and size
       if (attachment.file) {
         const fileExtension = '.' + attachment.file.name.split('.').pop()?.toLowerCase();
@@ -684,9 +684,6 @@ function RegistrationForm() {
         }
       }
     });
-    if (!atLeastOneAttachment) {
-      validationErrors.push("At least one supporting document (file upload or link) is required.");
-    }
 
 
     return validationErrors;
@@ -886,9 +883,9 @@ function RegistrationForm() {
                     className="w-full px-4 py-3 border border-pink-200 rounded-xl focus:ring-2 focus:ring-[#C41E7F] focus:border-transparent bg-white"
                   >
                     <option value="">Select gender</option>
-                    <option value="Male">Male</option>
+                    <option value="Male" disabled>Male</option>
                     <option value="Female">Female</option>
-                    <option value="Others">Others</option>
+                    <option value="Others" disabled>Others</option>
                   </select>
                 </div>
               </div>
@@ -903,6 +900,7 @@ function RegistrationForm() {
                     value={formData.dateOfBirth}
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 border border-pink-200 rounded-xl focus:ring-2 focus:ring-[#C41E7F] focus:border-transparent"
+                    max="2026-12-31"
                   />
                 </div>
                 <div>
@@ -1314,13 +1312,21 @@ function RegistrationForm() {
                     disabled={!tncVisited}
                   />
                   <span className="text-sm text-gray-700 font-medium">
-                    I/We agree to all the above declarations and <a href="/terms-and-conditions" target="_blank" rel="noopener noreferrer" className="underline text-[#C41E7F]">Terms and Condition</a>. <span className="text-red-500">*</span>
+                    I/We agree to all the above declarations and{' '}
+                    <button
+                      type="button"
+                      className="underline text-[#C41E7F] hover:text-[#D4AF37] focus:outline-none"
+                      onClick={() => setTncModalOpen(true)}
+                    >
+                      Terms and Conditions
+                    </button>.
+                    <span className="text-red-500">*</span>
                   </span>
                 </label>
                 {!tncVisited && (
                   <div className="mt-2 text-xs text-red-600 font-semibold flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" /></svg>
-                    It is <span className="font-bold">mandatory</span> to visit and read the Terms and Conditions page before you can agree and submit your registration.
+                    It is <span className="font-bold">mandatory</span> to read the Terms and Conditions before you can agree and submit your registration.
                   </div>
                 )}
               </div>
@@ -1373,16 +1379,9 @@ function PartnershipBanner() {
               <div className="text-gray-500 text-sm">Excellence in Education</div>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <img 
-              src="/toi.png" 
-              alt="Times of India" 
-              className="w-12 h-12 sm:w-16 sm:h-16 object-contain"
-            />
-            <div className="hidden sm:block">
-              <div className="text-[#E31837] font-bold">Times of India</div>
-              <div className="text-gray-500 text-sm">India&apos;s Leading Daily</div>
-            </div>
+          {/* TOI Logo */}
+          <div className="flex items-center gap-2">
+            <img src="/TOI1.png" alt="Times of India" className="w-16 h-20 sm:w-40 sm:h-20 object-contain" />
           </div>
         </div>
       </div>
@@ -1489,4 +1488,21 @@ export default function RegisterPage() {
       <ScrollToTopButton />
     </div>
   );
+}
+
+// Terms Modal Component
+function TermsModal({ open, onClose, onAcknowledge }: { open: boolean; onClose: () => void; onAcknowledge: () => void }) {
+  const [tncVisited, setTncVisited] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      setTncVisited(true);
+    }
+    return () => setTncVisited(false);
+  }, [open]);
+
+  const handleAcknowledge = () => {
+    onAcknowledge();
+    setTncVisited(true);
+  };
 }
