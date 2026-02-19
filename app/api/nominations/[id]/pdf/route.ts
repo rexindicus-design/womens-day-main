@@ -395,10 +395,22 @@ export async function GET(
         'Content-Disposition': `attachment; filename="nomination_${nomination.id}_${(nomination.nominee_name || 'details').replace(/[^a-zA-Z0-9]/g, '_')}.pdf"`,
       },
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('PDF generation error:', error);
+
+    // If the database is unreachable, return a clear 503 so the frontend
+    // can show a helpful message to the admin user.
+    if (error?.code === 'ECONNREFUSED') {
+      return NextResponse.json(
+        { error: 'Database connection refused — please start MySQL / check DB settings' },
+        { status: 503 }
+      );
+    }
+
+    // For other errors return the message in development; fall back to a
+    // generic message otherwise.
     return NextResponse.json(
-      { error: 'Failed to generate PDF' },
+      { error: error?.message || 'Failed to generate PDF' },
       { status: 500 }
     );
   }

@@ -1349,6 +1349,9 @@ function RegistrationForm() {
                           <tr><td className="border border-gray-300 px-3 py-2 font-medium">Participant</td><td className="border border-gray-300 px-3 py-2">Women professionals, entrepreneurs, and artists residing in India since the past two years as on December 31, 2025 are eligible to participate.</td></tr>
                           <tr><td className="border border-gray-300 px-3 py-2 font-medium">Jury</td><td className="border border-gray-300 px-3 py-2">A group of experts identified by Management for evaluation/review of the entries based on pre-defined evaluation parameters.</td></tr>
                           <tr><td className="border border-gray-300 px-3 py-2 font-medium">Terms and conditions</td><td className="border border-gray-300 px-3 py-2">The terms governing the listing, as may be amended from time to time by the Management.</td></tr>
+                        <tr><td className="border border-gray-300 px-3 py-2 font-medium">Website and its T&C & Privacy</td><td className="border border-gray-300 px-3 py-2">“Insert website link” – To be updated</td></tr>
+                          <tr><td className="border border-gray-300 px-3 py-2 font-medium">Contact ID</td><td className="border border-gray-300 px-3 py-2">“Insert Contact ID / Number” – to be updated</td></tr>
+                        
                         </tbody>
                       </table>
                     </div>
@@ -1357,7 +1360,7 @@ function RegistrationForm() {
                       <li><strong>1.2</strong> These Terms may be modified without any prior written notification. Participant is advised to regularly review these Terms.</li>
                       <li><strong>1.3</strong> The process and gratification for the listing thereof may be changed/modified/split/merged/increased/decreased or cancelled by the Management based on the number and quality of entries received.</li>
                       <li><strong>1.4</strong> The management reserves the right to add or remove nominations in any category based on the quality of entries received in that category.</li>
-                      <li><strong>1.5</strong> If no Participants are found to be worthy of inclusion by the Management, the reward may be cancelled. The decision of the Management in this regard will be final and binding.</li>
+                      <li><strong>1.5</strong> If no Participants are found to be worthy of inclusion by the Management, the reward may be cancelled. The decision of the Management in this regard will be final and binding. The Management will not entertain any queries in this regard.</li>
                     </ul>
                   </div>
 
