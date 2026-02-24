@@ -16,7 +16,7 @@ import {
 const navItems = [
   { name: "Home", href: "/" },
   { name: "Categories", href: "/categories", active: true },
-  { name: "Register", href: "/register" },
+  { name: "Register", href: "#register" },
 ];
 
 // SIMATS Award categories from the document
@@ -380,7 +380,7 @@ function CategoriesContent() {
             Know someone who deserves recognition? Submit your nomination today.
           </p>
           <a
-            href="/register"
+            href="#register"
             className="inline-flex items-center gap-2 bg-gradient-to-r from-[#C41E7F] to-[#D4AF37] text-white font-bold px-8 py-4 rounded-full hover:shadow-lg hover:shadow-pink-500/30 transition-all hover:scale-105"
           >
             <Trophy className="w-5 h-5" />

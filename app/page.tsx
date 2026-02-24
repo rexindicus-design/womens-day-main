@@ -25,7 +25,7 @@ import {
 const navItems = [
   { name: "Home", href: "/", active: true },
   { name: "Categories", href: "/categories" },
-  { name: "Register", href: "/register" },
+  { name: "Register", href: "#register" },
 ];
 
 // News ticker items
@@ -191,7 +191,7 @@ function HeroSection() {
         />
         {/* Overlay clickable area for 'Nominate Now' */}
         <a
-          href="/register"
+          href="#register"
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 block"
           style={{ width: '220px', height: '60px', zIndex: 10 }}
           aria-label="Nominate Now"
@@ -238,7 +238,7 @@ function AnnouncementBox() {
 
       {/* Submit Button */}
       <a
-        href="/register"
+        href="#register"
         className="inline-flex items-center gap-2 bg-gradient-to-r from-[#C41E7F] to-[#D4AF37] text-white font-bold px-8 py-4 text-lg rounded-full hover:shadow-lg hover:shadow-pink-500/30 transition-all hover:scale-105"
       >
         <Award className="w-6 h-6" />
@@ -859,7 +859,7 @@ function CTASection() {
           Don&apos;t miss the opportunity to recognize extraordinary women making a difference
         </p>
         <a
-          href="/register"
+          href="#register"
           className="inline-flex items-center gap-2 bg-gradient-to-r from-[#C41E7F] to-[#D4AF37] text-white font-bold px-8 py-4 rounded-full hover:shadow-lg hover:shadow-pink-500/30 transition-all hover:scale-105 text-lg"
         >
           <Trophy className="w-5 h-5" />
