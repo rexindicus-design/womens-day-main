@@ -3,7 +3,7 @@
 import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { LogOut, FileText, Download, ExternalLink, Grid, List as ListIcon, ChevronLeft, ChevronRight } from 'lucide-react';
+import { LogOut, FileText, Download, ExternalLink, Grid, List as ListIcon, ChevronLeft, ChevronRight, Search, X, Filter, FileDown, GripVertical } from 'lucide-react';
 
 interface Attachment {
     id: number;
@@ -30,6 +30,17 @@ interface PaginationData {
     currentPage?: number;
 }
 
+interface FilterOptions {
+    categories: string[];
+    cities: string[];
+    sectors: string[];
+    statuses: string[];
+}
+
+interface ColumnConfig {
+    [key: string]: string;
+}
+
 function AdminDashboardContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -37,12 +48,54 @@ function AdminDashboardContent() {
     const [loading, setLoading] = useState(true);
     const [viewMode, setViewMode] = useState<'list' | 'preview'>('list');
     const [pagination, setPagination] = useState<PaginationData | null>(null);
-    const [statusFilter, setStatusFilter] = useState<string>('all');
     const [downloadingId, setDownloadingId] = useState<number | null>(null);
+
+    // Filter states
+    const [statusFilter, setStatusFilter] = useState<string>('all');
+    const [categoryFilter, setCategoryFilter] = useState<string>('all');
+    const [cityFilter, setCityFilter] = useState<string>('all');
+    const [sectorFilter, setSectorFilter] = useState<string>('all');
+    const [searchQuery, setSearchQuery] = useState<string>('');
+    const [dateFrom, setDateFrom] = useState<string>('');
+    const [dateTo, setDateTo] = useState<string>('');
+    const [showFilters, setShowFilters] = useState(false);
+
+    // Filter options from API
+    const [filterOptions, setFilterOptions] = useState<FilterOptions>({
+        categories: [],
+        cities: [],
+        sectors: [],
+        statuses: ['pending', 'under_review', 'shortlisted', 'selected', 'rejected'],
+    });
+
+    // CSV Export modal states
+    const [showExportModal, setShowExportModal] = useState(false);
+    const [exportColumns, setExportColumns] = useState<ColumnConfig>({});
+    const [selectedColumns, setSelectedColumns] = useState<string[]>([]);
+    const [exporting, setExporting] = useState(false);
 
     // Get page from URL or default to 1
     const page = parseInt(searchParams.get('page') || '1');
     const limit = 10;
+
+    // Fetch filter options on mount
+    useEffect(() => {
+        const fetchFilterOptions = async () => {
+            try {
+                const res = await fetch('/api/nominations/export', { method: 'POST' });
+                if (res.ok) {
+                    const data = await res.json();
+                    setFilterOptions(data.filters);
+                    setExportColumns(data.columns);
+                    // Default: select all columns
+                    setSelectedColumns(Object.keys(data.columns));
+                }
+            } catch (error) {
+                console.error('Failed to fetch filter options:', error);
+            }
+        };
+        fetchFilterOptions();
+    }, []);
 
     useEffect(() => {
         const checkAuth = async () => {
@@ -51,25 +104,36 @@ function AdminDashboardContent() {
                 if (!res.ok) {
                     router.push('/admin/login');
                 } else {
-                    fetchNominations(page, statusFilter);
+                    fetchNominations(page);
                 }
             } catch (error) {
                 router.push('/admin/login');
             }
         };
         checkAuth();
-    }, [router, page, statusFilter]);
+    }, [router, page, statusFilter, categoryFilter, cityFilter, sectorFilter, searchQuery, dateFrom, dateTo]);
 
-    const fetchNominations = async (currentPage: number, status: string) => {
+    const fetchNominations = async (currentPage: number) => {
         try {
             setLoading(true);
-            const offset = (currentPage - 1) * limit;
-            const res = await fetch(`/api/nominations?page=${currentPage}&limit=${limit}&status=${status}`);
+            const params = new URLSearchParams({
+                page: currentPage.toString(),
+                limit: limit.toString(),
+                status: statusFilter,
+            });
+
+            if (categoryFilter !== 'all') params.set('category', categoryFilter);
+            if (cityFilter !== 'all') params.set('city', cityFilter);
+            if (sectorFilter !== 'all') params.set('sector', sectorFilter);
+            if (searchQuery) params.set('search', searchQuery);
+            if (dateFrom) params.set('dateFrom', dateFrom);
+            if (dateTo) params.set('dateTo', dateTo);
+
+            const res = await fetch(`/api/nominations?${params.toString()}`);
             if (res.ok) {
                 const data = await res.json();
                 setNominations(data.data);
 
-                // Calculate total pages
                 const total = data.pagination.total;
                 const totalPages = Math.ceil(total / limit);
 
@@ -99,9 +163,25 @@ function AdminDashboardContent() {
         router.push(`/admin?page=${newPage}`);
     };
 
+    const clearFilters = () => {
+        setStatusFilter('all');
+        setCategoryFilter('all');
+        setCityFilter('all');
+        setSectorFilter('all');
+        setSearchQuery('');
+        setDateFrom('');
+        setDateTo('');
+        setPage(1);
+    };
+
+    const hasActiveFilters = () => {
+        return statusFilter !== 'all' || categoryFilter !== 'all' || cityFilter !== 'all' ||
+            sectorFilter !== 'all' || searchQuery || dateFrom || dateTo;
+    };
+
     const handleStatusFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setStatusFilter(e.target.value);
-        setPage(1); // Reset to first page on filter change
+        setPage(1);
     };
 
     const handlePrevPage = () => {
@@ -110,6 +190,73 @@ function AdminDashboardContent() {
 
     const handleNextPage = () => {
         if (pagination && page < pagination.totalPages!) setPage(page + 1);
+    };
+
+    // CSV Export functions
+    const toggleColumn = (col: string) => {
+        setSelectedColumns(prev =>
+            prev.includes(col) ? prev.filter(c => c !== col) : [...prev, col]
+        );
+    };
+
+    const selectAllColumns = () => {
+        setSelectedColumns(Object.keys(exportColumns));
+    };
+
+    const deselectAllColumns = () => {
+        setSelectedColumns([]);
+    };
+
+    const moveColumn = (index: number, direction: 'up' | 'down') => {
+        const newColumns = [...selectedColumns];
+        const swapIndex = direction === 'up' ? index - 1 : index + 1;
+        if (swapIndex >= 0 && swapIndex < newColumns.length) {
+            [newColumns[index], newColumns[swapIndex]] = [newColumns[swapIndex], newColumns[index]];
+            setSelectedColumns(newColumns);
+        }
+    };
+
+    const handleExportCSV = async () => {
+        if (selectedColumns.length === 0) {
+            alert('Please select at least one column to export.');
+            return;
+        }
+
+        setExporting(true);
+        try {
+            const params = new URLSearchParams({
+                columns: selectedColumns.join(','),
+                status: statusFilter,
+            });
+
+            if (categoryFilter !== 'all') params.set('category', categoryFilter);
+            if (cityFilter !== 'all') params.set('city', cityFilter);
+            if (sectorFilter !== 'all') params.set('sector', sectorFilter);
+            if (searchQuery) params.set('search', searchQuery);
+            if (dateFrom) params.set('dateFrom', dateFrom);
+            if (dateTo) params.set('dateTo', dateTo);
+
+            const response = await fetch(`/api/nominations/export?${params.toString()}`);
+            if (!response.ok) {
+                throw new Error('Export failed');
+            }
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `nominations_export_${new Date().toISOString().slice(0, 10)}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+            setShowExportModal(false);
+        } catch (error) {
+            console.error('Export error:', error);
+            alert('Failed to export CSV. Please try again.');
+        } finally {
+            setExporting(false);
+        }
     };
 
     const handleDownloadPDF = async (nominationId: number, nomineeName: string) => {
@@ -146,27 +293,25 @@ function AdminDashboardContent() {
     return (
         <div className="p-8 bg-pink-50 min-h-screen">
             <div className="max-w-7xl mx-auto">
-                <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+                {/* Header */}
+                <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
                     <h1 className="text-3xl font-bold text-[#C41E7F]">Admin Dashboard</h1>
-                    <div className="flex flex-wrap items-center gap-4">
-                        <div className="relative">
-                            <select
-                                value={statusFilter}
-                                onChange={handleStatusFilterChange}
-                                className="appearance-none bg-white border border-pink-200 text-gray-700 py-2 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-[#C41E7F]"
-                            >
-                                <option value="all">All Statuses</option>
-                                <option value="pending">Pending</option>
-                                <option value="under_review">Under Review</option>
-                                <option value="shortlisted">Shortlisted</option>
-                                <option value="selected">Selected</option>
-                                <option value="rejected">Rejected</option>
-                            </select>
-                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
-                            </div>
-                        </div>
-
+                    <div className="flex flex-wrap items-center gap-3">
+                        <button
+                            onClick={() => setShowFilters(!showFilters)}
+                            className={`px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors border ${showFilters || hasActiveFilters() ? 'bg-[#C41E7F] text-white border-[#C41E7F]' : 'bg-white text-gray-700 border-pink-200 hover:border-[#C41E7F]'}`}
+                        >
+                            <Filter size={18} />
+                            <span>Filters</span>
+                            {hasActiveFilters() && <span className="bg-white text-[#C41E7F] text-xs px-1.5 py-0.5 rounded-full font-bold">!</span>}
+                        </button>
+                        <button
+                            onClick={() => setShowExportModal(true)}
+                            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
+                        >
+                            <FileDown size={18} />
+                            <span>Export CSV</span>
+                        </button>
                         <div className="bg-white rounded-lg shadow-sm border border-pink-100 p-1 flex">
                             <button
                                 onClick={() => setViewMode('list')}
@@ -174,7 +319,6 @@ function AdminDashboardContent() {
                                 title="List View"
                             >
                                 <ListIcon size={20} />
-                                <span className="text-sm font-medium">List</span>
                             </button>
                             <button
                                 onClick={() => setViewMode('preview')}
@@ -182,7 +326,6 @@ function AdminDashboardContent() {
                                 title="Preview View"
                             >
                                 <Grid size={20} />
-                                <span className="text-sm font-medium">Preview</span>
                             </button>
                         </div>
                         <button
@@ -194,6 +337,209 @@ function AdminDashboardContent() {
                         </button>
                     </div>
                 </div>
+
+                {/* Filters Panel */}
+                {showFilters && (
+                    <div className="bg-white rounded-xl shadow-lg border border-pink-100 p-6 mb-6">
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-lg font-semibold text-gray-800">Filter Nominations</h2>
+                            {hasActiveFilters() && (
+                                <button onClick={clearFilters} className="text-sm text-[#C41E7F] hover:underline flex items-center gap-1">
+                                    <X size={14} /> Clear All
+                                </button>
+                            )}
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            {/* Search */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Search</label>
+                                <div className="relative">
+                                    <input
+                                        type="text"
+                                        value={searchQuery}
+                                        onChange={(e) => { setSearchQuery(e.target.value); setPage(1); }}
+                                        placeholder="Name, org, or email..."
+                                        className="w-full border border-pink-200 rounded-lg py-2 px-3 pr-10 focus:outline-none focus:border-[#C41E7F]"
+                                    />
+                                    <Search size={18} className="absolute right-3 top-2.5 text-gray-400" />
+                                </div>
+                            </div>
+
+                            {/* Status */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                                <select
+                                    value={statusFilter}
+                                    onChange={handleStatusFilterChange}
+                                    className="w-full border border-pink-200 rounded-lg py-2 px-3 focus:outline-none focus:border-[#C41E7F]"
+                                >
+                                    <option value="all">All Statuses</option>
+                                    {filterOptions.statuses.map(s => (
+                                        <option key={s} value={s}>{s.replace('_', ' ')}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            {/* Category */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                                <select
+                                    value={categoryFilter}
+                                    onChange={(e) => { setCategoryFilter(e.target.value); setPage(1); }}
+                                    className="w-full border border-pink-200 rounded-lg py-2 px-3 focus:outline-none focus:border-[#C41E7F]"
+                                >
+                                    <option value="all">All Categories</option>
+                                    {filterOptions.categories.map(c => (
+                                        <option key={c} value={c}>{c}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            {/* City/District */}
+                            {/* <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">City/District</label>
+                                <select
+                                    value={cityFilter}
+                                    onChange={(e) => { setCityFilter(e.target.value); setPage(1); }}
+                                    className="w-full border border-pink-200 rounded-lg py-2 px-3 focus:outline-none focus:border-[#C41E7F]"
+                                >
+                                    <option value="all">All Cities</option>
+                                    {filterOptions.cities.map(c => (
+                                        <option key={c} value={c}>{c}</option>
+                                    ))}
+                                </select>
+                            </div> */}
+
+                            {/* Sector */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Sector</label>
+                                <select
+                                    value={sectorFilter}
+                                    onChange={(e) => { setSectorFilter(e.target.value); setPage(1); }}
+                                    className="w-full border border-pink-200 rounded-lg py-2 px-3 focus:outline-none focus:border-[#C41E7F]"
+                                >
+                                    <option value="all">All Sectors</option>
+                                    {filterOptions.sectors.map(s => (
+                                        <option key={s} value={s}>{s}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+
+                        {/* Results count */}
+                        {pagination && (
+                            <div className="mt-4 text-sm text-gray-600">
+                                Showing {nominations.length} of {pagination.total} nominations
+                                {hasActiveFilters() && ' (filtered)'}
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* Export Modal */}
+                {showExportModal && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                        <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+                            <div className="flex justify-between items-center px-6 py-4 border-b border-gray-200">
+                                <h2 className="text-xl font-bold text-gray-800">Export to CSV</h2>
+                                <button onClick={() => setShowExportModal(false)} className="text-gray-400 hover:text-gray-600">
+                                    <X size={24} />
+                                </button>
+                            </div>
+
+                            <div className="p-6 overflow-y-auto max-h-[60vh]">
+                                <div className="flex justify-between items-center mb-4">
+                                    <p className="text-sm text-gray-600">
+                                        Select columns to export and drag to reorder. The export will include the current filters.
+                                    </p>
+                                    <div className="flex gap-2">
+                                        <button onClick={selectAllColumns} className="text-xs text-[#C41E7F] hover:underline">Select All</button>
+                                        <span className="text-gray-300">|</span>
+                                        <button onClick={deselectAllColumns} className="text-xs text-[#C41E7F] hover:underline">Deselect All</button>
+                                    </div>
+                                </div>
+
+                                {/* Column selection with ordering */}
+                                <div className="space-y-2">
+                                    {selectedColumns.map((col, index) => (
+                                        <div key={col} className="flex items-center gap-3 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+                                            <div className="flex flex-col gap-0.5">
+                                                <button
+                                                    onClick={() => moveColumn(index, 'up')}
+                                                    disabled={index === 0}
+                                                    className="text-gray-400 hover:text-gray-600 disabled:opacity-30"
+                                                >
+                                                    <ChevronLeft size={14} className="rotate-90" />
+                                                </button>
+                                                <button
+                                                    onClick={() => moveColumn(index, 'down')}
+                                                    disabled={index === selectedColumns.length - 1}
+                                                    className="text-gray-400 hover:text-gray-600 disabled:opacity-30"
+                                                >
+                                                    <ChevronRight size={14} className="rotate-90" />
+                                                </button>
+                                            </div>
+                                            <GripVertical size={16} className="text-gray-400" />
+                                            <span className="flex-1 text-sm font-medium text-gray-700">{exportColumns[col]}</span>
+                                            <button onClick={() => toggleColumn(col)} className="text-red-400 hover:text-red-600">
+                                                <X size={16} />
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {/* Unselected columns */}
+                                {Object.keys(exportColumns).filter(col => !selectedColumns.includes(col)).length > 0 && (
+                                    <div className="mt-4">
+                                        <p className="text-sm text-gray-500 mb-2">Available columns (click to add):</p>
+                                        <div className="flex flex-wrap gap-2">
+                                            {Object.keys(exportColumns)
+                                                .filter(col => !selectedColumns.includes(col))
+                                                .map(col => (
+                                                    <button
+                                                        key={col}
+                                                        onClick={() => toggleColumn(col)}
+                                                        className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-full transition-colors"
+                                                    >
+                                                        + {exportColumns[col]}
+                                                    </button>
+                                                ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="flex justify-between items-center px-6 py-4 border-t border-gray-200 bg-gray-50">
+                                <span className="text-sm text-gray-600">{selectedColumns.length} columns selected</span>
+                                <div className="flex gap-3">
+                                    <button
+                                        onClick={() => setShowExportModal(false)}
+                                        className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        onClick={handleExportCSV}
+                                        disabled={exporting || selectedColumns.length === 0}
+                                        className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg flex items-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        {exporting ? (
+                                            <>
+                                                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                                                Exporting...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Download size={18} />
+                                                Export CSV
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 {viewMode === 'list' ? (
                     <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-pink-100">

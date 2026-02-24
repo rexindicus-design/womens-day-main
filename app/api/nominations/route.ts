@@ -7,20 +7,59 @@ export async function GET(request: NextRequest) {
         const page = parseInt(searchParams.get('page') || '1');
         const limit = parseInt(searchParams.get('limit') || '10');
         const status = searchParams.get('status');
+        const category = searchParams.get('category');
+        const search = searchParams.get('search');
+        const city = searchParams.get('city');
+        const sector = searchParams.get('sector');
+        const dateFrom = searchParams.get('dateFrom');
+        const dateTo = searchParams.get('dateTo');
         const offset = (page - 1) * limit;
 
         // Build query conditions
-        let whereClause = '';
+        const conditions: string[] = [];
         const queryParams: any[] = [];
 
         if (status && status !== 'all') {
-            whereClause = 'WHERE status = ?';
+            conditions.push('status = ?');
             queryParams.push(status);
         }
 
+        if (category && category !== 'all') {
+            conditions.push('category = ?');
+            queryParams.push(category);
+        }
+
+        if (search) {
+            conditions.push('(nominee_name LIKE ? OR organization LIKE ? OR email_id LIKE ?)');
+            const searchTerm = `%${search}%`;
+            queryParams.push(searchTerm, searchTerm, searchTerm);
+        }
+
+        if (city && city !== 'all') {
+            conditions.push('city_district = ?');
+            queryParams.push(city);
+        }
+
+        if (sector && sector !== 'all') {
+            conditions.push('sector = ?');
+            queryParams.push(sector);
+        }
+
+        if (dateFrom) {
+            conditions.push('DATE(created_at) >= ?');
+            queryParams.push(dateFrom);
+        }
+
+        if (dateTo) {
+            conditions.push('DATE(created_at) <= ?');
+            queryParams.push(dateTo);
+        }
+
+        const whereClause = conditions.length > 0 ? 'WHERE ' + conditions.join(' AND ') : '';
+
         // Get total count
         const countQuery = `SELECT COUNT(*) as total FROM nominations ${whereClause}`;
-        const countResult = await query<any[]>(countQuery, queryParams);
+        const countResult = await query<any[]>(countQuery, [...queryParams]);
         const total = countResult[0].total;
         const totalPages = Math.ceil(total / limit);
 
