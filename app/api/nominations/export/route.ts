@@ -128,9 +128,11 @@ export async function GET(request: NextRequest) {
 
                 // Format dates
                 if ((col === 'date_of_birth' || col === 'start_date' || col === 'end_date') && value) {
-                    value = new Date(value).toISOString().split('T')[0];
+                    const d = new Date(value);
+                    value = isNaN(d.getTime()) ? String(value) : d.toISOString().split('T')[0];
                 } else if ((col === 'created_at' || col === 'updated_at') && value) {
-                    value = new Date(value).toISOString();
+                    const d = new Date(value);
+                    value = isNaN(d.getTime()) ? String(value) : d.toISOString();
                 }
 
                 return escapeCSV(value);

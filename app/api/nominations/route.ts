@@ -63,8 +63,7 @@ export async function GET(request: NextRequest) {
         const total = countResult[0].total;
         const totalPages = Math.ceil(total / limit);
 
-        // Get paginated nominations
-        const nominationsQuery = `SELECT * FROM nominations ${whereClause} ORDER BY created_at DESC LIMIT ? OFFSET ?`;
+        const nominationsQuery = `SELECT * FROM nominations ${whereClause} ORDER BY created_at DESC, id DESC LIMIT ? OFFSET ?`;
         queryParams.push(limit, offset);
 
         const nominations = await query<any[]>(nominationsQuery, queryParams);
